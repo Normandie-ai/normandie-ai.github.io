@@ -25,7 +25,7 @@ const parsedContent = parseMarkdown(content);
 ---
 <section class={cn("relative overflow-hidden", hasNotch && 'pb-notch', previousBlockHasNotch && 'mt-notch')} style={`z-index: ${zIndex}`} data-header-color={true}>
   <div class={`relative bg-white`} data-notch-border-color={hasNotch ? '#1B1C5D' : undefined}>
-    <div class="mx-auto max-w-screen-xl px-8 sm:px-16 py-48 relative z-10 flex flex-col lg:flex-row-reverse justify-center items-center gap-32">
+    <div class="mx-auto max-w-screen-xl px-6 xs:px-8 sm:px-16 py-24 xs:py-32 md:py-48 relative z-10 flex flex-col lg:flex-row-reverse justify-center items-center gap-32">
         <div class="max-w-lg md:max-w-none">
             {title && (
                 <AvegaTitle title={title} level={4} color="#725CFA" />
@@ -44,7 +44,7 @@ const parsedContent = parseMarkdown(content);
         </div>
 
         {splineURL && (
-            <div class="max-w-sm w-full shrink-0">
+            <div class="hidden sm:block max-w-sm w-full shrink-0">
                 <iframe src={splineURL} class="w-full aspect-square rounded-full"></iframe>
             </div>
         )}
