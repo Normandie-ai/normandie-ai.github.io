@@ -86,10 +86,10 @@ const currentLayout = gridLayouts[statsCount as keyof typeof gridLayouts] || gri
       <div class="absolute top-0 left-24 w-[32rem] h-[32rem] rounded-full filter blur-3xl blur-circle"></div>
     )}
     
-    <div class="mx-auto max-w-screen-xl px-8 py-48 relative z-10">
+    <div class="mx-auto max-w-screen-xl px-8 py-24 xs:py-32 md:py-48 relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         <!-- Statistics Cards Section -->
-        <div class="order-1 lg:order-1">
+        <div class="hidden xs:block order-1 lg:order-1">
           <div class={currentLayout.container}>
             {stats.map((stat, index) => {
               const colSpan = currentLayout.pattern.length > 0 
@@ -116,7 +116,7 @@ const currentLayout = gridLayouts[statsCount as keyof typeof gridLayouts] || gri
         <div class="order-2 lg:order-2">
           <div class="max-w-lg md:max-w-none">
             {title && (
-              <AvegaTitle title={title} level={4} />
+              <AvegaTitle title={title} level={4} className="mt-0 xs:mt-4" />
             )}
 
             <div class="mt-4 prose prose-strong:font-bold max-w-none prose-invert">

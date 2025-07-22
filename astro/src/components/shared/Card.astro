@@ -60,7 +60,7 @@ const imageUrl = getImageUrl(backgroundImage?.url, strapiUrl);
 		</div>
 	)}
 	
-	<AvegaTitle title={title} level={titleLevel} className={cn("mx-auto", titleClassName)} color={titleColor} />
+	<AvegaTitle title={title} level={titleLevel} className={cn("mx-auto", iconUrl && "mt-4", titleClassName)} color={titleColor} />
 	
 	{subtitle && (
 		<p class={cn("relative text-white font-bold text-center text-sm", subtitleClassName)}>
