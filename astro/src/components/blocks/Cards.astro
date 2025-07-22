@@ -55,7 +55,7 @@ const containerClass = hasMultipleCards
 <section class=`relative overflow-hidden ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}` style={{
    zIndex: zIndex
 }}>
-	<div class={`relative w-full py-48 mx-auto`} data-notch-border-color={hasNotch ? '#6336E4' : undefined}>
+	<div class={`relative w-full py-24 xs:py-32 md:py-48 mx-auto`} data-notch-border-color={hasNotch ? '#6336E4' : undefined}>
 		{imageUrl && (
 			<Image 
 				src={imageUrl}
@@ -75,7 +75,7 @@ const containerClass = hasMultipleCards
 			loading="lazy"
 		/>
 		
-		<div class={`relative z-10 ${containerClass} max-w-screen-xl mx-auto px-16`}>
+		<div class={`relative z-10 ${containerClass} max-w-screen-xl mx-auto px-6 xs:px-8 md:px-16`}>
 			{cards && cards.map((card) => (
 				<Card
 					title={card.title}
