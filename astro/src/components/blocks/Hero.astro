@@ -48,12 +48,10 @@ const parsedContent = parseMarkdown(description);
             loading="eager"
          />
       )}
-      <div class="max-w-screen-xl mx-auto flex flex-col items-start justify-center h-full w-full z-10 px-8">
+      <div class="max-w-screen-xl mx-auto flex flex-col items-start justify-center h-full w-full z-10 px-6 xs:px-8">
          <AvegaTitle title={title} />
-         <div class="text-white text-start mt-2 md:mt-6 text-md md:text-md max-w-3xl relative z-10">
-            <article set:html={parsedContent} />
-         </div>
-         <div class="mt-18 flex gap-4">
+         <div class="text-white text-start mt-3 md:mt-6 text-md md:text-md max-w-3xl relative z-10" set:html={parsedContent} />
+         <div class="mt-8 xs:mt-12 md:mt-18 flex gap-4">
             {buttons.map((button) => (
                <Button 
                   variant="shadow"
