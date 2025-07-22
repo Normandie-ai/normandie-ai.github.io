@@ -7,6 +7,7 @@
 }
 
 @theme {
+  --breakpoint-xs: 30rem;
   --animate-marquee: marquee 5s linear infinite;
   @keyframes marquee {
     0% {
