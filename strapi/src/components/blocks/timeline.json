@@ -19,6 +19,9 @@
     },
     "hasNotch": {
       "type": "boolean"
+    },
+    "anchor": {
+      "type": "string"
     }
   }
 }

@@ -7,6 +7,7 @@ export interface BlocksBanner extends Struct.ComponentSchema {
     displayName: 'Banner';
   };
   attributes: {
+    anchor: Schema.Attribute.String;
     backgroundImage: Schema.Attribute.Media<'files' | 'images'>;
     cards: Schema.Attribute.Component<'components.card', true>;
     content: Schema.Attribute.RichText;
@@ -22,6 +23,7 @@ export interface BlocksCards extends Struct.ComponentSchema {
     icon: 'grid';
   };
   attributes: {
+    anchor: Schema.Attribute.String;
     backgroundImage: Schema.Attribute.Media<'images'>;
     cards: Schema.Attribute.Component<'components.card', true>;
     hasNotch: Schema.Attribute.Boolean;
@@ -37,6 +39,7 @@ export interface BlocksFeatures extends Struct.ComponentSchema {
     icon: 'bulletList';
   };
   attributes: {
+    anchor: Schema.Attribute.String;
     content: Schema.Attribute.RichText;
     hasNotch: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     images: Schema.Attribute.Media<'images', true>;
@@ -53,6 +56,7 @@ export interface BlocksGridList extends Struct.ComponentSchema {
     displayName: 'GridList';
   };
   attributes: {
+    anchor: Schema.Attribute.String;
     cards: Schema.Attribute.Component<'components.card', true>;
     content: Schema.Attribute.RichText;
     hasNotch: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -68,6 +72,7 @@ export interface BlocksHero extends Struct.ComponentSchema {
     icon: 'monitor';
   };
   attributes: {
+    anchor: Schema.Attribute.String;
     backgroundImage: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
@@ -85,6 +90,7 @@ export interface BlocksHighlight extends Struct.ComponentSchema {
     displayName: 'Highlight';
   };
   attributes: {
+    anchor: Schema.Attribute.String;
     content: Schema.Attribute.RichText;
     ctaLink: Schema.Attribute.String;
     ctaText: Schema.Attribute.String;
@@ -102,6 +108,7 @@ export interface BlocksStats extends Struct.ComponentSchema {
     icon: 'chartLine';
   };
   attributes: {
+    anchor: Schema.Attribute.String;
     content: Schema.Attribute.RichText & Schema.Attribute.Required;
     ctaLink: Schema.Attribute.String;
     ctaText: Schema.Attribute.String;
@@ -121,10 +128,11 @@ export interface BlocksTeam extends Struct.ComponentSchema {
     icon: 'apps';
   };
   attributes: {
+    anchor: Schema.Attribute.String;
     cardContent: Schema.Attribute.RichText;
     cardImage: Schema.Attribute.Media<'images' | 'files'>;
     cardTitle: Schema.Attribute.String;
-    description: Schema.Attribute.String;
+    content: Schema.Attribute.RichText;
     hasNotch: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     title: Schema.Attribute.String;
   };
@@ -137,6 +145,7 @@ export interface BlocksTimeline extends Struct.ComponentSchema {
     displayName: 'Timeline';
   };
   attributes: {
+    anchor: Schema.Attribute.String;
     cards: Schema.Attribute.Component<'components.card', true>;
     content: Schema.Attribute.RichText;
     hasNotch: Schema.Attribute.Boolean;

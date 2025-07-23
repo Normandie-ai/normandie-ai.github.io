@@ -37,6 +37,9 @@
     "hasNotch": {
       "type": "boolean",
       "default": false
+    },
+    "anchor": {
+      "type": "string"
     }
   }
 }

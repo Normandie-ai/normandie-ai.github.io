@@ -10,9 +10,6 @@
     "title": {
       "type": "string"
     },
-    "description": {
-      "type": "string"
-    },
     "cardImage": {
       "type": "media",
       "multiple": false,
@@ -31,6 +28,12 @@
     "hasNotch": {
       "type": "boolean",
       "default": false
+    },
+    "anchor": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext"
     }
   }
 }

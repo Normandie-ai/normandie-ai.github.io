@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-07-17T18:25:51.312Z"
+    "x-generation-date": "2025-07-23T09:07:36.860Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -6799,6 +6799,9 @@
           },
           "hasNotch": {
             "type": "boolean"
+          },
+          "anchor": {
+            "type": "string"
           }
         }
       },
@@ -7086,6 +7089,9 @@
           },
           "hasNotch": {
             "type": "boolean"
+          },
+          "anchor": {
+            "type": "string"
           }
         }
       },
@@ -7102,9 +7108,6 @@
             ]
           },
           "title": {
-            "type": "string"
-          },
-          "description": {
             "type": "string"
           },
           "cardImage": {
@@ -7244,6 +7247,12 @@
           },
           "hasNotch": {
             "type": "boolean"
+          },
+          "anchor": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
           }
         }
       },
@@ -7689,6 +7698,9 @@
           },
           "hasNotch": {
             "type": "boolean"
+          },
+          "anchor": {
+            "type": "string"
           }
         }
       },
@@ -7731,6 +7743,9 @@
             "items": {
               "$ref": "#/components/schemas/ComponentsCardComponent"
             }
+          },
+          "anchor": {
+            "type": "string"
           }
         }
       },
@@ -7760,6 +7775,9 @@
           },
           "hasNotch": {
             "type": "boolean"
+          },
+          "anchor": {
+            "type": "string"
           }
         }
       },
@@ -7789,6 +7807,9 @@
           },
           "hasNotch": {
             "type": "boolean"
+          },
+          "anchor": {
+            "type": "string"
           }
         }
       },
@@ -7821,6 +7842,9 @@
           },
           "hasNotch": {
             "type": "boolean"
+          },
+          "anchor": {
+            "type": "string"
           }
         }
       },
@@ -8102,6 +8126,9 @@
             "items": {
               "$ref": "#/components/schemas/ComponentsCardComponent"
             }
+          },
+          "anchor": {
+            "type": "string"
           }
         }
       },

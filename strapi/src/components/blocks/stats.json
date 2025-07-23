@@ -39,6 +39,9 @@
       "type": "component",
       "repeatable": true,
       "component": "components.card"
+    },
+    "anchor": {
+      "type": "string"
     }
   }
 }
