@@ -43,3 +43,33 @@ html {
     clip-path: url(#ticket-shape);
   }
 }
+
+.markdown {
+  h2 {
+    @apply text-2xl font-bold my-4;
+  }
+  h3 {
+    @apply text-xl font-bold my-3;
+  }
+  h4 {
+    @apply text-lg font-bold my-2;
+  }
+  p {
+    @apply text-base prose;
+  }
+  ul {
+    @apply list-disc pl-4;
+  }
+  ol {
+    @apply list-decimal pl-4;
+  }
+  li {
+    @apply my-2;
+  }
+  a {
+    @apply text-blue-500 underline;
+  }
+  hr {
+    @apply my-8 opacity-20;
+  }
+}
