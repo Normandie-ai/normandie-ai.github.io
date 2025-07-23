@@ -19,6 +19,10 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .mt-notch {
   margin-top: calc(var(--notch-height) * -1);
 }
