@@ -25,7 +25,9 @@
         "blocks.grid-list",
         "blocks.timeline",
         "blocks.highlight",
-        "blocks.banner"
+        "blocks.banner",
+        "blocks.header",
+        "blocks.text-block"
       ]
     }
   }
