@@ -1,0 +1,40 @@
+---
+import { getImageUrl } from "@lib/imageUtils";
+import AvegaTitle from "../shared/AvegaTitle.astro";
+import Button from "../shared/Button.astro";
+
+interface Props {
+  title: string;
+  backgroundImage: {
+      url: string;
+      alternativeText: string;
+  };
+}
+
+const { title, backgroundImage } = Astro.props;
+
+const strapiUrl = import.meta.env.STRAPI_URL;
+
+const backgroundImageUrl = getImageUrl(backgroundImage?.url, strapiUrl);
+---
+<section 
+  style={{
+    backgroundImage: `url(${backgroundImageUrl})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+
+  
+  <div class="mx-auto max-w-screen-xl py-10 px-6 xs:px-8 sm:py-12 relative z-10">
+    <Button 
+        text="Retour"
+        url="/"
+        target="_self"
+        variant="outline"
+        className="mb-4"
+    />
+    <AvegaTitle title={title} />
+  </div>
+</section> 
