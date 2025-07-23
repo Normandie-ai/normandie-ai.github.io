@@ -64,6 +64,17 @@ export interface BlocksGridList extends Struct.ComponentSchema {
   };
 }
 
+export interface BlocksHeader extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_headers';
+  info: {
+    displayName: 'Header';
+  };
+  attributes: {
+    backgroundImage: Schema.Attribute.Media<'images' | 'files'>;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface BlocksHero extends Struct.ComponentSchema {
   collectionName: 'components_heroes';
   info: {
@@ -138,6 +149,16 @@ export interface BlocksTeam extends Struct.ComponentSchema {
   };
 }
 
+export interface BlocksTextBlock extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_text_blocks';
+  info: {
+    displayName: 'TextBlock';
+  };
+  attributes: {
+    content: Schema.Attribute.RichText;
+  };
+}
+
 export interface BlocksTimeline extends Struct.ComponentSchema {
   collectionName: 'components_blocks_timelines';
   info: {
@@ -194,10 +215,12 @@ declare module '@strapi/strapi' {
       'blocks.cards': BlocksCards;
       'blocks.features': BlocksFeatures;
       'blocks.grid-list': BlocksGridList;
+      'blocks.header': BlocksHeader;
       'blocks.hero': BlocksHero;
       'blocks.highlight': BlocksHighlight;
       'blocks.stats': BlocksStats;
       'blocks.team': BlocksTeam;
+      'blocks.text-block': BlocksTextBlock;
       'blocks.timeline': BlocksTimeline;
       'components.card': ComponentsCard;
       'components.link': ComponentsLink;

@@ -37,6 +37,6 @@ export async function getStaticPaths() {
 
 const { blocks } = Astro.props;
 ---
-<PageLayout>
+<PageLayout shownNavbar={false}>
   <BlockManager blocks={blocks} />
 </PageLayout>
