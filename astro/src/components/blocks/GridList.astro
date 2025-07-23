@@ -20,6 +20,7 @@ interface CardData {
 }
 
 interface Props {
+  anchor?: string;
   zIndex: number;
 	title: string;
   content: string;
@@ -28,13 +29,13 @@ interface Props {
   previousBlockHasNotch: boolean;
 }
 
-const { zIndex, title, content, cards, hasNotch, previousBlockHasNotch } = Astro.props;
+const { anchor, zIndex, title, content, cards, hasNotch, previousBlockHasNotch } = Astro.props;
 
 // Configure marked to properly handle markdown
 configureMarkdown();
 const parsedContent = parseMarkdown(content);
 ---
-<section style={`z-index: ${zIndex}`} class=`relative overflow-hidden ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}` data-header-color={true}>
+<section id={anchor} style={`z-index: ${zIndex}`} class=`relative overflow-hidden ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}` data-header-color={true}>
   <div class={`relative bg-white`} data-notch-border-color={hasNotch ? '#ffffff' : undefined}>
     <div class="mx-auto max-w-screen-xl px-6 xs:px-8 py-24 xs:py-32 md:py-48">
       {title && (

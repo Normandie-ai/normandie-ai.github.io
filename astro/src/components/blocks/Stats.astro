@@ -23,6 +23,7 @@ interface CardData {
 }
 
 interface Props {
+    anchor?: string;
     zIndex: number;
     title: string;
     content: string;
@@ -34,7 +35,7 @@ interface Props {
     previousBlockHasNotch: boolean;
 }
 
-const { zIndex, title, content, stats = [], ctaText, ctaLink, variant = "dark", hasNotch, previousBlockHasNotch } = Astro.props;
+const { anchor, zIndex, title, content, stats = [], ctaText, ctaLink, variant = "dark", hasNotch, previousBlockHasNotch } = Astro.props;
 
 // Configure marked for markdown parsing
 configureMarkdown();
@@ -77,7 +78,7 @@ const gridLayouts = {
 
 const currentLayout = gridLayouts[statsCount as keyof typeof gridLayouts] || gridLayouts.default;
 ---
-<section class={`relative overflow-hidden ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}`} style={{
+<section id={anchor} class={`relative overflow-hidden ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}`} style={{
   zIndex: zIndex
 }}>
   <div class={`relative`} style={sectionStyle} data-notch-border-color={hasNotch ? '#1B1C5D' : undefined}>

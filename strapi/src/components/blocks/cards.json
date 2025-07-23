@@ -16,14 +16,22 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "variant": {
       "type": "enumeration",
-      "enum": ["blue", "purple"]
+      "enum": [
+        "blue",
+        "purple"
+      ]
     },
     "hasNotch": {
       "type": "boolean"
+    },
+    "anchor": {
+      "type": "string"
     }
   }
 }

@@ -9,9 +9,10 @@ import { cn } from "@lib/cn";
 import NotchArrow from "../shared/NotchArrow.astro";
 
 interface TeamProps {
+  anchor?: string;
   zIndex: number;
 	title: string;
-	description: string;
+  content: string;
   cardImage: {
     url: string;
     alternativeText: string;
@@ -40,27 +41,29 @@ const members: Member[] = await fetchApi({
 
 const strapiUrl = import.meta.env.STRAPI_URL;
 
-const { zIndex, title, description, cardImage, cardTitle, cardContent, hasNotch, previousBlockHasNotch } = Astro.props as TeamProps;
+const { anchor, zIndex, title, content, cardImage, cardTitle, cardContent, hasNotch, previousBlockHasNotch } = Astro.props as TeamProps;
 
+// Configure marked to properly handle markdown
 configureMarkdown();
-const parsedContent = parseMarkdown(cardContent);
+const parsedContent = parseMarkdown(content);
+const parsedCardContent = parseMarkdown(cardContent);
 
 const cardImageUrl = getImageUrl(cardImage?.url, strapiUrl);
 
 ---
-<section class={cn("relative overflow-hidden text-gray-600 body-font", hasNotch && "pb-notch", previousBlockHasNotch && "mt-notch")} style={`z-index: ${zIndex}`} data-header-color={true}>
+<section id={anchor} class={cn("relative overflow-hidden text-gray-600 body-font", hasNotch && "pb-notch", previousBlockHasNotch && "mt-notch")} style={`z-index: ${zIndex}`} data-header-color={true}>
   <div class={`relative bg-white`} data-notch-border-color={hasNotch ? '#ff00ff' : undefined}>
     <div class="max-w-screen-xl mx-auto px-6 xs:px-8 py-24 xs:py-32 md:py-48">
       <div class="mb-20">
         <AvegaTitle title={title} color="#725CFA" level={4} />
-        <div class="leading-relaxed text-base mt-5" set:html={description} />
+        <div class="leading-relaxed text-base mt-5" set:html={parsedContent} />
       </div>
 
       <div class="sm:px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {members?.map((member) => {
           return <TeamMember firstName={member.firstName} lastName={member.lastName} avatar={member.avatar} role={member.role} job={member.job} />;
         })}
-        <JoinCard cardImage={cardImageUrl} cardTitle={cardTitle} cardContent={parsedContent} />
+        <JoinCard cardImage={cardImageUrl} cardTitle={cardTitle} cardContent={parsedCardContent} />
       </div>
     </div>
 
