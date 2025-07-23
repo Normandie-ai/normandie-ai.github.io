@@ -1,0 +1,20 @@
+---
+import { configureMarkdown, parseMarkdown } from "@lib/markdown";
+
+interface Props {
+    content: string;
+}
+
+const { content } = Astro.props;
+
+// Configure marked for markdown parsing
+configureMarkdown();
+const parsedContent = parseMarkdown(content);
+
+---
+<section 
+  class="markdown"
+  data-header-color={true}
+>
+  <div class="mx-auto max-w-screen-xl py-10 px-6 xs:px-8 sm:py-12 relative z-10" set:html={parsedContent}></div>
+</section> 
