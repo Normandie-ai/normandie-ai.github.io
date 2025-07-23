@@ -2,7 +2,12 @@
 import "@styles/global.css";
 import "@styles/fonts.css";
 
-const { meta = {} } = Astro.props;
+const { meta = {
+  title: "Normandie.ai // La journée normande des intelligences artificielles responsables",
+  description: "La journée Normandie.ai du 11 décembre 2025 aura lieu au Pathé Docks 76 de Rouen. Cette journée comportera de nombreuses activités et temps forts. Le fil conducteur de la journée sera les conférences où des experts discuteront de quatre sujets clés de l'IA.",
+  keywords: "Normandie.ai, IA, conférences, Rouen, Pathé Docks 76",
+  ogImage: "/og-image.png",
+} } = Astro.props;
 const language = 'en';
 ---
 
@@ -14,6 +19,18 @@ const language = 'en';
     <title>{meta.title}</title>
     <meta name="description" content={meta.description} />
     <meta name="keywords" content={meta.keywords} />
+    <link href="/favicon.webp" rel="icon" media="(prefers-color-scheme: light)">
+    <link href="/favicon.webp" rel="icon" media="(prefers-color-scheme: dark)">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content={meta.title}>
+    <meta property="og:description" content={meta.description}>
+    <meta property="og:image" content={meta.ogImage}>
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={meta.title}>
+    <meta name="twitter:description" content={meta.description}>
+    <meta name="twitter:image" content={meta.ogImage}>
     <script src="../scripts/notchInit.ts"></script>
     <script src="../scripts/headerColorSwitch.ts"></script>
   </head>
