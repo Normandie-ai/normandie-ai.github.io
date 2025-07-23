@@ -13,9 +13,6 @@
     "subtitle": {
       "type": "string"
     },
-    "description": {
-      "type": "string"
-    },
     "backgroundImage": {
       "type": "media",
       "multiple": false,
@@ -46,6 +43,9 @@
         "md",
         "lg"
       ]
+    },
+    "description": {
+      "type": "richtext"
     }
   }
 }

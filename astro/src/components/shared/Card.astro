@@ -4,6 +4,7 @@ import AvegaTitle from "./AvegaTitle.astro";
 import { getImageUrl } from "@lib/imageUtils";
 import { cn } from "@lib/cn";
 import Button from "./Button.astro";
+import { configureMarkdown, parseMarkdown } from "@lib/markdown";
 
 interface LinkItem {
 	title: string;
@@ -38,6 +39,9 @@ const { title, subtitle, description, icon, iconSize, iconClassName, backgroundI
 
 const iconUrl = getImageUrl(icon?.url, strapiUrl);
 const imageUrl = getImageUrl(backgroundImage?.url, strapiUrl);
+
+configureMarkdown();
+const parsedDescription = parseMarkdown(description);
 ---
 
 <div class={cn("relative size-full p-8 pb-10 text-center rounded-2xl backdrop-blur-xs bg-[#424242]/10 border border-white shadow-xl hover:shadow-2xl transition-all duration-300 group hover:scale-105 max-w-5xl", className)}
@@ -69,9 +73,7 @@ const imageUrl = getImageUrl(backgroundImage?.url, strapiUrl);
 	)}
 
 	{description && (
-		<p class="relative mt-4 text-white/90 leading-relaxed text-center text-sm mx-auto">
-			{description}
-		</p>
+		<div class="relative mt-4 text-white/90 leading-relaxed text-center text-sm mx-auto" set:html={parsedDescription}></div>
 	)}
 
 	{button && (

@@ -184,7 +184,7 @@ export interface ComponentsCard extends Struct.ComponentSchema {
   attributes: {
     backgroundImage: Schema.Attribute.Media<'images' | 'files'>;
     button: Schema.Attribute.Component<'components.link', false>;
-    description: Schema.Attribute.String;
+    description: Schema.Attribute.RichText;
     icon: Schema.Attribute.Media<'images' | 'files'>;
     iconSize: Schema.Attribute.Enumeration<['sm', 'md', 'lg']>;
     subtitle: Schema.Attribute.String;
