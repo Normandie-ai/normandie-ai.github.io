@@ -12,21 +12,22 @@ interface LinkItem {
 	target?: "_blank" | "_self" | "_parent" | "_top";
 }
 interface Props {
-    zIndex: number;
-    title: string;
-    description: string;
-    backgroundImage: {
-        url: string;
-        alternativeText: string;
-    };
-    buttons: LinkItem[];
-    hasNotch: boolean;
-    previousBlockHasNotch: boolean;
+   anchor?: string;
+   zIndex: number;
+   title: string;
+   description: string;
+   backgroundImage: {
+      url: string;
+      alternativeText: string;
+   };
+   buttons: LinkItem[];
+   hasNotch: boolean;
+   previousBlockHasNotch: boolean;
 }
 
 const strapiUrl = import.meta.env.STRAPI_URL;
 
-const { zIndex, title, description, backgroundImage, buttons, hasNotch, previousBlockHasNotch } = Astro.props;
+const { anchor, zIndex, title, description, backgroundImage, buttons, hasNotch, previousBlockHasNotch } = Astro.props;
 
 const imageUrl = getImageUrl(backgroundImage.url, strapiUrl);
 
@@ -35,7 +36,7 @@ configureMarkdown();
 const parsedContent = parseMarkdown(description);
 ---
 
-<section class=`overflow-hidden relative h-screen ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}` style={{
+<section id={anchor} class=`overflow-hidden relative h-screen ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}` style={{
    zIndex: zIndex
 }}>
    <div class={`h-full overflow-hidden relative flex flex-col items-center justify-center`} data-notch-border-color={hasNotch ? '#6336E4' : undefined}>

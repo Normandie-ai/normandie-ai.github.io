@@ -6,6 +6,7 @@ import { configureMarkdown, parseMarkdown } from "@lib/markdown";
 import AvegaTitle from "../shared/AvegaTitle.astro";
 
 interface Props {
+    anchor?: string;
     zIndex: number;
     title: string;
     content: string;
@@ -16,14 +17,14 @@ interface Props {
     previousBlockHasNotch: boolean;
 }
 
-const { zIndex, title, content, splineURL, ctaText, ctaLink, hasNotch, previousBlockHasNotch } = Astro.props;
+const { anchor, zIndex, title, content, splineURL, ctaText, ctaLink, hasNotch, previousBlockHasNotch } = Astro.props;
 
 // Configure marked for markdown parsing
 configureMarkdown();
 const parsedContent = parseMarkdown(content);
 
 ---
-<section class={cn("relative overflow-hidden", hasNotch && 'pb-notch', previousBlockHasNotch && 'mt-notch')} style={`z-index: ${zIndex}`} data-header-color={true}>
+<section id={anchor} class={cn("relative overflow-hidden", hasNotch && 'pb-notch', previousBlockHasNotch && 'mt-notch')} style={`z-index: ${zIndex}`} data-header-color={true}>
   <div class={`relative bg-white`} data-notch-border-color={hasNotch ? '#1B1C5D' : undefined}>
     <div class="mx-auto max-w-screen-xl px-6 xs:px-8 sm:px-16 py-24 xs:py-32 md:py-48 relative z-10 flex flex-col lg:flex-row-reverse justify-center items-center gap-32">
         <div class="max-w-lg md:max-w-none">

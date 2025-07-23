@@ -28,6 +28,7 @@ interface CardData {
 }
 
 interface Props {
+	anchor?: string;
 	zIndex: number;
 	cards: CardData[];
 	backgroundImage?: {
@@ -41,7 +42,7 @@ interface Props {
 
 const strapiUrl = import.meta.env.STRAPI_URL;
 
-const { zIndex, cards, backgroundImage, variant, hasNotch, previousBlockHasNotch } = Astro.props;
+const { anchor, zIndex, cards, backgroundImage, variant, hasNotch, previousBlockHasNotch } = Astro.props;
 
 const imageUrl = getImageUrl(backgroundImage?.url, strapiUrl);
 const gradientOverlay = variant === "blue" ? gradientOverlayBlue : gradientOverlayPurple;
@@ -52,7 +53,7 @@ const containerClass = hasMultipleCards
   : "flex justify-center";
 ---
 
-<section class=`relative overflow-hidden ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}` style={{
+<section id={anchor} class=`relative overflow-hidden ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}` style={{
    zIndex: zIndex
 }}>
 	<div class={`relative w-full py-24 xs:py-32 md:py-48 mx-auto`} data-notch-border-color={hasNotch ? '#6336E4' : undefined}>

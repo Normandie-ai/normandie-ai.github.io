@@ -5,6 +5,7 @@ import NotchArrow from "@components/shared/NotchArrow.astro";
 import { configureMarkdown, parseMarkdown } from "@lib/markdown";
 
 interface Props {
+  anchor?: string;
   zIndex: number;
 	title: string;
   titleImage: {
@@ -22,7 +23,7 @@ interface Props {
 }
 const strapiUrl = import.meta.env.STRAPI_URL;
 
-const { zIndex, title, titleImage, content, images = [], variant, hasNotch, previousBlockHasNotch } = Astro.props;
+const { anchor, zIndex, title, titleImage, content, images = [], variant, hasNotch, previousBlockHasNotch } = Astro.props;
 
 const imageUrl = getImageUrl(titleImage?.url, strapiUrl);
 
@@ -66,7 +67,7 @@ const arrowColor = variant === "dark" ? "#ffffff" : "#CF65FB";
   }
 </style>
 
-<section style={`z-index: ${zIndex}`} class=`relative overflow-hidden ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}` data-header-color={variant !== "dark"}>
+<section id={anchor} style={`z-index: ${zIndex}`} class=`relative overflow-hidden ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}` data-header-color={variant !== "dark"}>
   <div class={`relative mx-auto`} style={sectionStyle} data-notch-border-color={hasNotch ? variantColor : undefined}>
     <!-- Decorative blurred circles - only show for dark variant -->
     {variant === "dark" && (
