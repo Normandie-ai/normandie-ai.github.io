@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import AvegaTitle from "./AvegaTitle.astro";
+import { getImageUrl } from "@lib/imageUtils";
 
 interface Props {
 	firstName: string;
@@ -15,7 +16,7 @@ interface Props {
 const strapiUrl = import.meta.env.STRAPI_URL;
 
 const { firstName, lastName, avatar, role, job } = Astro.props;
-const avatarUrl = avatar ? strapiUrl + avatar.url : null;
+const avatarUrl = getImageUrl(avatar?.url, strapiUrl);
 
 const isLongName = firstName.length + lastName.length > 15;
 const fullName = `${firstName} ${isLongName ? lastName.slice(0, 1) + "." : lastName}`;
