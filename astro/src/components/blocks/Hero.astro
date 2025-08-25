@@ -20,6 +20,14 @@ interface Props {
       url: string;
       alternativeText: string;
    };
+   mobileBackgroundImage?: {
+      url: string;
+      alternativeText: string;
+   };
+   mobileObjectImage?: {
+      url: string;
+      alternativeText: string;
+   };
    buttons: LinkItem[];
    hasNotch: boolean;
    previousBlockHasNotch: boolean;
@@ -27,9 +35,11 @@ interface Props {
 
 const strapiUrl = import.meta.env.STRAPI_URL;
 
-const { anchor, zIndex, title, description, backgroundImage, buttons, hasNotch, previousBlockHasNotch } = Astro.props;
+const { anchor, zIndex, title, description, backgroundImage, mobileBackgroundImage, mobileObjectImage, buttons, hasNotch, previousBlockHasNotch } = Astro.props;
 
 const imageUrl = getImageUrl(backgroundImage.url, strapiUrl);
+const mobileBackgroundUrl = mobileBackgroundImage ? getImageUrl(mobileBackgroundImage.url, strapiUrl) : null;
+const mobileObjectUrl = mobileObjectImage ? getImageUrl(mobileObjectImage.url, strapiUrl) : null;
 
 // Configure marked to properly handle markdown
 configureMarkdown();
@@ -40,18 +50,45 @@ const parsedContent = parseMarkdown(description);
    zIndex: zIndex
 }}>
    <div class={`h-full overflow-hidden relative flex flex-col items-center justify-center`} data-notch-border-color={hasNotch ? '#6336E4' : undefined}>
+      {/* Desktop background image */}
       {imageUrl && (
          <Image src={imageUrl}
             alt=""
-            class="absolute inset-0 w-full h-full object-cover z-0"
+            class="absolute inset-0 w-full h-full object-cover z-0 hidden md:block"
             width="1920"
             height="1080"
             loading="eager"
          />
       )}
+      {/* Mobile background image */}
+      {mobileBackgroundUrl ? (
+         <Image src={mobileBackgroundUrl}
+            alt={mobileBackgroundImage?.alternativeText || ""}
+            class="absolute inset-0 w-full h-full object-cover z-0 block md:hidden"
+            width="390"
+            height="844"
+            loading="eager"
+         />
+      ) : (
+         <img src="/bg-hero-mobile.png"
+            alt=""
+            class="absolute inset-0 w-full h-full object-cover z-0 block md:hidden"
+            loading="eager"
+         />
+      )}
+      {/* Mobile object image */}
+      {mobileObjectUrl && (
+         <Image src={mobileObjectUrl}
+            alt={mobileObjectImage?.alternativeText || ""}
+            class="absolute top-1/3 right-2 -translate-y-1/2 w-60 h-auto z-5 block md:hidden"
+            width="240"
+            height="300"
+            loading="eager"
+         />
+      )}
       <div class="max-w-screen-xl mx-auto flex flex-col items-start justify-center h-full w-full z-10 px-6 xs:px-8">
          <AvegaTitle title={title} />
-         <div class="text-white text-start mt-3 md:mt-6 text-md md:text-md max-w-3xl relative z-10" set:html={parsedContent} />
+         <div class="text-white text-start mt-4 md:mt-6 text-md md:text-md max-w-3xl relative z-10" set:html={parsedContent} />
          <div class="mt-8 xs:mt-12 md:mt-18 flex gap-4">
             {buttons.map((button) => (
                <Button 
