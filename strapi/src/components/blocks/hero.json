@@ -35,6 +35,22 @@
     },
     "anchor": {
       "type": "string"
+    },
+    "mobileBackgroundImage": {
+      "allowedTypes": [
+        "images",
+        "files"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "mobileObjectImage": {
+      "allowedTypes": [
+        "images",
+        "files"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

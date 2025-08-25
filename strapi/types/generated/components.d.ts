@@ -90,6 +90,8 @@ export interface BlocksHero extends Struct.ComponentSchema {
     buttons: Schema.Attribute.Component<'components.link', true>;
     description: Schema.Attribute.RichText;
     hasNotch: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    mobileBackgroundImage: Schema.Attribute.Media<'images' | 'files'>;
+    mobileObjectImage: Schema.Attribute.Media<'images' | 'files'>;
     title: Schema.Attribute.String;
   };
 }
