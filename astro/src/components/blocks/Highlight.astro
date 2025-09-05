@@ -45,8 +45,8 @@ const parsedContent = parseMarkdown(content);
         </div>
 
         {splineURL && (
-            <div class="hidden sm:block max-w-sm w-full shrink-0">
-                <canvas id="canvas3d" class="w-full aspect-square rounded-full" />
+            <div class="hidden sm:block max-w-sm w-full shrink-0 rounded-full overflow-hidden">
+                <iframe src={splineURL} class="w-full aspect-square"></iframe>
             </div>
         )}
     </div>
@@ -56,15 +56,3 @@ const parsedContent = parseMarkdown(content);
    )}
   </div>
 </section>
-
-<script define:vars={{ splineURL }}>
-    import { Application } from '@splinetool/runtime';
-
-    const canvas = document.getElementById('canvas3d');
-    if (canvas && splineURL) {
-        const app = new Application(canvas);
-        app.load(splineURL);
-    }
-</script>
-
-
