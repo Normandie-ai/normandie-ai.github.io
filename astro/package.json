@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@sentry/astro": "^9.3.0",
+    "@splinetool/runtime": "^1.10.56",
     "@spotlightjs/astro": "^3.0.1",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.9",
