@@ -108,7 +108,7 @@ const backgroundImageUrl = getImageUrl(backgroundImage?.url, strapiUrl);
       }}
     >
       {logoUrl && (
-        <Image src={logoUrl} alt={logo?.alternativeText ?? "Logo"} width="1920" height="1080" class="w-sm h-auto mx-auto" />
+        <Image src={logoUrl} alt={logo?.alternativeText ?? "Logo"} width="1920" height="1080" class="w-sm h-auto mx-auto" quality="100" />
       )}
 
       <div class="mt-4 prose prose-strong:font-bold max-w-none text-white text-center" set:html={parsedContent} />
