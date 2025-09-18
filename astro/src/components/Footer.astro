@@ -3,7 +3,6 @@ import { Image } from "astro:assets";
 import fetchApi from "@lib/strapi";
 import { getImageUrl } from "@lib/imageUtils";
 import Linkedin from "./shared/icons/linkedin.astro";
-import popcornBox from "@assets/popcorn-box.png";
 
 
 interface NavbarItem {
@@ -19,6 +18,10 @@ interface Navigation {
 	};
 	links?: NavbarItem[];
     linkedinURL?: string;
+    icon?: {
+        url: string;
+		alternativeText: string;
+    }
 }
 const strapiUrl = import.meta.env.STRAPI_URL;
 const baseUrl = import.meta.env.BASE_URL;
@@ -36,10 +39,12 @@ try {
 
 // Destructure with fallback values
 const logo = navigationData?.logo || null;
+const icon = navigationData?.icon || null;
 const links = navigationData?.links || [];
 const linkedinURL = navigationData?.linkedinURL || null;
 
 const imageUrl = getImageUrl(logo?.url, strapiUrl);
+const iconUrl = getImageUrl(icon?.url, strapiUrl);
 ---
 
 <footer class="body-font">
@@ -69,6 +74,14 @@ const imageUrl = getImageUrl(logo?.url, strapiUrl);
             </a>
         </nav>
         <p class="mt-6 text-sm text-center md:text-left text-gray-400">© {new Date().getFullYear()} Normandie.ai - Tous droits réservés</p>
-        <Image src={popcornBox} alt="Popcorn Box" class="absolute top-0 right-0 -translate-y-1/2 w-[350px] z-10 hidden xl:block" />
+        {icon && iconUrl && (
+            <Image
+                src={iconUrl}
+                alt={icon?.alternativeText || "Popcorn Box"}
+                width="350"
+                height="350"
+                class="absolute top-0 right-0 -translate-y-1/2 w-[350px] z-10 hidden xl:block"
+            />
+        )}
     </div>
 </footer>
