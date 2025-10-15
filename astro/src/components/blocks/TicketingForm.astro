@@ -347,7 +347,7 @@ function stripHtml(html: string): string {
 
       if (data.data?.short_id && data.data?.session_identifier) {
         // Pass session_identifier in URL query parameter
-        const redirectUrl = `${apiHost}/checkout/1/${data.data.short_id}/details?session_identifier=${data.data.session_identifier}`;
+        const redirectUrl = `${apiHost}/checkout/${eventId}/${data.data.short_id}/details?session_identifier=${data.data.session_identifier}`;
 
         console.log('Redirecting to:', redirectUrl);
         window.location.href = redirectUrl;
