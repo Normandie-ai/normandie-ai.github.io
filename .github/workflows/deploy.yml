@@ -2,8 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  
+    branches: [main]
+
   workflow_dispatch:
     inputs:
       branch:
@@ -29,31 +29,35 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'yarn'
+          node-version: "20"
+          cache: "yarn"
           cache-dependency-path: astro/yarn.lock
-      
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
         with:
           static_site_generator: astro
-      
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
         working-directory: ./astro
-      
+
       - name: Build site
         run: yarn build
         working-directory: ./astro
         env:
           STRAPI_URL: ${{ secrets.STRAPI_URL }}
+          HIEVENTS_API_HOST: ${{ secrets.HIEVENTS_API_HOST }}
+          HIEVENTS_EVENT_ID: ${{ secrets.HIEVENTS_EVENT_ID }}
+          MAX_TICKETS: ${{ secrets.MAX_TICKETS }}
+          MODE: ${{ secrets.MODE }}
           # Add any other environment variables you need
-      
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -68,4 +72,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4
