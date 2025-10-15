@@ -34,8 +34,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "yarn"
-          cache-dependency-path: astro/yarn.lock
+          # Disable cache to always fetch fresh dependencies
+          # cache: "yarn"
+          # cache-dependency-path: astro/yarn.lock
 
       - name: Setup Pages
         id: pages
@@ -53,7 +54,7 @@ jobs:
         env:
           STRAPI_URL: ${{ secrets.STRAPI_URL }}
           HIEVENTS_API_HOST: ${{ secrets.HIEVENTS_API_HOST }}
-          HIEVENTS_EVENT_ID: ${{ secrets.HIEVENTS_EVENT_ID }}
+          HIEVENTS_EVENT_ID: 2
           MAX_TICKETS: ${{ secrets.MAX_TICKETS }}
           MODE: ${{ secrets.MODE }}
           # Add any other environment variables you need
