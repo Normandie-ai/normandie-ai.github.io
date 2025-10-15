@@ -8,6 +8,7 @@ services:
         - HIEVENTS_API_HOST=${HIEVENTS_API_HOST}
         - HIEVENTS_EVENT_ID=${HIEVENTS_EVENT_ID}
         - MAX_TICKETS=${MAX_TICKETS}
+        - MODE=${MODE}
     container_name: normandieai-astro
     ports:
       - "4321:4321"
@@ -16,4 +17,5 @@ services:
       - HIEVENTS_API_HOST=${HIEVENTS_API_HOST}
       - HIEVENTS_EVENT_ID=${HIEVENTS_EVENT_ID}
       - MAX_TICKETS=${MAX_TICKETS}
+      - MODE=${MODE}
     restart: unless-stopped
