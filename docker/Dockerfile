@@ -34,15 +34,14 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Install serve globally for serving static files
+RUN npm install -g serve
+
 # Copy built assets from builder stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package.json ./package.json
-
-# Install only production dependencies
-RUN yarn install --production --frozen-lockfile
 
 # Expose port
 EXPOSE 4321
 
-# Start the application
-CMD ["yarn", "preview", "--host", "0.0.0.0"]
+# Start the application with serve (no host restrictions, no SPA mode)
+CMD ["serve", "dist", "-l", "4321"]

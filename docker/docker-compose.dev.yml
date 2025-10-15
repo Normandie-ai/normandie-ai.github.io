@@ -1,0 +1,57 @@
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik-dev
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--log.level=DEBUG"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - dev-network
+
+  astro:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        - STRAPI_URL=${STRAPI_URL}
+        - HIEVENTS_API_HOST=${HIEVENTS_API_HOST}
+        - HIEVENTS_EVENT_ID=${HIEVENTS_EVENT_ID}
+        - MAX_TICKETS=${MAX_TICKETS}
+    container_name: astro-dev
+    environment:
+      - STRAPI_URL=${STRAPI_URL}
+      - HIEVENTS_API_HOST=${HIEVENTS_API_HOST}
+      - HIEVENTS_EVENT_ID=${HIEVENTS_EVENT_ID}
+      - MAX_TICKETS=${MAX_TICKETS}
+    labels:
+      - "traefik.enable=true"
+      # Service definition (shared by both routers)
+      - "traefik.http.services.astro-dev.loadbalancer.server.port=4321"
+      # HTTP router
+      - "traefik.http.routers.astro-dev-http.rule=Host(`app.local`)"
+      - "traefik.http.routers.astro-dev-http.entrypoints=web"
+      - "traefik.http.routers.astro-dev-http.service=astro-dev"
+      # HTTPS router (self-signed for dev)
+      - "traefik.http.routers.astro-dev-https.rule=Host(`app.local`)"
+      - "traefik.http.routers.astro-dev-https.entrypoints=websecure"
+      - "traefik.http.routers.astro-dev-https.tls=true"
+      - "traefik.http.routers.astro-dev-https.service=astro-dev"
+    restart: unless-stopped
+    networks:
+      - dev-network
+    depends_on:
+      - traefik
+
+networks:
+  dev-network:
+    driver: bridge
