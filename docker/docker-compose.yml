@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  astro:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: normandieai-astro
+    ports:
+      - "4321:4321"
+    environment:
+      - STRAPI_URL=${STRAPI_URL}
+      - HIEVENTS_API_HOST=${HIEVENTS_API_HOST}
+      - HIEVENTS_EVENT_ID=${HIEVENTS_EVENT_ID}
+      - MAX_TICKETS=${MAX_TICKETS}
+    restart: unless-stopped
