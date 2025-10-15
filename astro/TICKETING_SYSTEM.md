@@ -227,3 +227,5 @@ HIEVENTS_API_HOST=https://localhost:8443
 - Promo code application triggers dynamic re-rendering of the ticket list
 - All API calls include proper error handling with user-friendly error messages
 - Console logs are included for debugging purposes (can be removed in production)
+
+test commmit
