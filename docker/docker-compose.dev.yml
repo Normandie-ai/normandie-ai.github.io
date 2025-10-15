@@ -27,12 +27,14 @@ services:
         - HIEVENTS_API_HOST=${HIEVENTS_API_HOST}
         - HIEVENTS_EVENT_ID=${HIEVENTS_EVENT_ID}
         - MAX_TICKETS=${MAX_TICKETS}
+        - MODE=${MODE}
     container_name: astro-dev
     environment:
       - STRAPI_URL=${STRAPI_URL}
       - HIEVENTS_API_HOST=${HIEVENTS_API_HOST}
       - HIEVENTS_EVENT_ID=${HIEVENTS_EVENT_ID}
       - MAX_TICKETS=${MAX_TICKETS}
+      - MODE=${MODE}
     labels:
       - "traefik.enable=true"
       # Service definition (shared by both routers)
