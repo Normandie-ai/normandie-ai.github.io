@@ -1,0 +1,71 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import TicketingHeader from "@components/blocks/TicketingHeader.astro";
+import TicketingForm from "@components/blocks/TicketingForm.astro";
+import TicketingSidebar from "@components/blocks/TicketingSidebar.astro";
+
+// Get environment variables
+const HIEVENTS_API_HOST = import.meta.env.HIEVENTS_API_HOST || "https://api.hi.events";
+const HIEVENTS_EVENT_ID = import.meta.env.HIEVENTS_EVENT_ID || "1";
+const MAX_TICKETS = parseInt(import.meta.env.MAX_TICKETS || "4");
+
+// Fetch event data
+let products = [];
+let eventTitle = "INSCRIPTION À L'ÉVÉNEMENT !";
+let eventDescription = "Parce que l'intelligence artificielle ne se résume pas à une seule discipline, la journée proposera des contenus variés entre enjeux stratégiques, défis sociétaux, innovations techniques et dimensions créatives. Une occasion unique de comprendre l'IA dans toute sa richesse... et sa complexité.";
+
+try {
+  const response = await fetch(`${HIEVENTS_API_HOST}/api/public/events/${HIEVENTS_EVENT_ID}`);
+  const data = await response.json();
+
+  if (data.data?.product_categories?.[0]?.products) {
+    // Filter to only show "Ticket d'accès professionnelle"
+    products = data.data.product_categories[0].products
+      .filter((p: any) => p.title === "Ticket d'accès professionnel")
+      .map((p: any) => ({
+        id: p.id,
+        title: p.title,
+        description: p.description,
+        price: p.prices?.[0]?.price || 0,
+        prices: p.prices || [],
+        type: p.type,
+        max_per_order: p.max_per_order,
+        min_per_order: p.min_per_order,
+      }));
+  }
+
+  // Optional: use event title/description from API if available
+  if (data.data?.title) {
+    eventTitle = data.data.title;
+  }
+  if (data.data?.description) {
+    eventDescription = data.data.description;
+  }
+} catch (error) {
+  console.error('Error fetching event data:', error);
+}
+---
+
+<BaseLayout>
+  <div class="min-h-screen grid lg:grid-cols-2">
+    <!-- Left side: Header + Form -->
+    <div class="flex flex-col">
+      <TicketingHeader />
+      <div class="flex-1 flex items-center">
+        <TicketingForm
+          title={eventTitle}
+          description={eventDescription}
+          products={products}
+          maxTickets={MAX_TICKETS}
+          apiHost={HIEVENTS_API_HOST}
+          eventId={HIEVENTS_EVENT_ID}
+        />
+      </div>
+    </div>
+
+    <!-- Right side: Popcorn illustration -->
+    <div class="hidden lg:block">
+      <TicketingSidebar />
+    </div>
+  </div>
+</BaseLayout>

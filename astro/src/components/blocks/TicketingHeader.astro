@@ -1,0 +1,30 @@
+---
+import Button from "../shared/Button.astro";
+
+interface Props {
+  logoUrl?: string;
+  logoAlt?: string;
+  backUrl?: string;
+  backText?: string;
+}
+
+const {
+  logoUrl = "/logo.png",
+  logoAlt = "Normandie.ai logo",
+  backUrl = "/",
+  backText = "Retour au site"
+} = Astro.props;
+---
+
+<header class="w-full py-6 px-8 xs:px-16">
+  <div class="flex items-center justify-between">
+    <img src={logoUrl} alt={logoAlt} class="h-8 w-auto" />
+    <Button
+      text={backText}
+      url={backUrl}
+      target="_self"
+      variant="outline"
+      className="text-[#725CFA] p-0"
+    />
+  </div>
+</header>
