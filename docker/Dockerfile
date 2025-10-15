@@ -14,6 +14,18 @@ RUN yarn install --frozen-lockfile
 # Copy source code
 COPY astro/ .
 
+# Accept build-time environment variables
+ARG STRAPI_URL
+ARG HIEVENTS_API_HOST
+ARG HIEVENTS_EVENT_ID
+ARG MAX_TICKETS
+
+# Set environment variables for build
+ENV STRAPI_URL=${STRAPI_URL}
+ENV HIEVENTS_API_HOST=${HIEVENTS_API_HOST}
+ENV HIEVENTS_EVENT_ID=${HIEVENTS_EVENT_ID}
+ENV MAX_TICKETS=${MAX_TICKETS}
+
 # Build the application
 RUN yarn build
 
