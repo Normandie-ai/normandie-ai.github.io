@@ -14,9 +14,6 @@ RUN yarn install --frozen-lockfile
 # Copy source code
 COPY astro/ .
 
-# Copy environment file from project root (injected by Dokploy)
-COPY .env .env
-
 # Build the application
 RUN yarn build
 
