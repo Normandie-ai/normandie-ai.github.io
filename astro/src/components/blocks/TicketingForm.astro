@@ -1,0 +1,375 @@
+---
+interface TicketProduct {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  prices: Array<{
+    id: number;
+    label: string;
+    price: number;
+  }>;
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  products: TicketProduct[];
+  maxTickets?: number;
+  apiHost: string;
+  eventId: string;
+}
+
+const {
+  title = "INSCRIPTION À L'ÉVÉNEMENT !",
+  // description = "Parce que l'intelligence artificielle ne se résume pas à une seule discipline, la journée proposera des contenus variés entre enjeux stratégiques, défis sociétaux, innovations techniques et dimensions créatives. Une occasion unique de comprendre l'IA dans toute sa richesse... et sa complexité.",
+  products,
+  maxTickets = 4,
+  apiHost,
+  eventId,
+} = Astro.props;
+
+// Function to strip HTML tags from description
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '');
+}
+---
+
+<div class="flex flex-col gap-8 h-full justify-center px-8 xs:px-16 py-12 items-end">
+  <div>
+    <h1 class="text-4xl font-bold mb-6 italic uppercase avega text-[#725CFA]">INSCRIPTION À L'ÉVÉNEMENT !</h1>
+    <p class="text-gray-700 leading-relaxed">Parce que l'intelligence artificielle ne se résume pas à une seule discipline, la journée proposera <b>des contenus variés</b> entre enjeux stratégiques, défis sociétaux, innovations techniques et dimensions créatives. Une occasion unique de <b>comprendre l'IA</b> dans toute sa richesse... et sa complexité.</p>
+  </div>
+
+  <div class="space-y-4 w-full">
+    <div class="relative">
+      <input
+        type="text"
+        id="promo-code-input"
+        placeholder="Entrer le code promo"
+        class="w-full px-4 py-3 pr-24 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#725CFA]"
+      />
+      <button
+        id="apply-promo-btn"
+        class="absolute right-2 top-1/2 -translate-y-1/2 text-[#725CFA] font-semibold hover:underline"
+      >
+        Appliquer
+      </button>
+    </div>
+
+    <div id="error-message" class="hidden text-red-600 text-sm"></div>
+  </div>
+
+  <div id="tickets-container" class="space-y-4">
+    {products.map((product) => (
+      <div
+        class="border border-gray-200 rounded-lg overflow-hidden"
+        data-product-id={product.id}
+        data-price-id={product.prices[0]?.id}
+      >
+        <!-- First row: Title and counter -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-200">
+          <div class="flex-1">
+            <h3 class="font-bold text-[#725CFA] uppercase">// {product.title}</h3>
+          </div>
+          <div class="flex items-center gap-3 ml-4">
+            <button
+              class="decrement-btn w-8 h-8 flex items-center justify-center rounded border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+              </svg>
+            </button>
+            <span class="ticket-count text-lg font-semibold min-w-[2ch] text-center">0</span>
+            <button
+              class="increment-btn w-8 h-8 flex items-center justify-center rounded border border-[#725CFA] bg-[#725CFA] text-white hover:bg-[#725CFA]/90"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Second row: Price and description -->
+        <div class="p-4">
+          {product.price === 0 && (
+            <div class="text-sm font-semibold text-gray-500 mb-2">Gratuit</div>
+          )}
+          {product.price > 0 && product.prices[0]?.label && (
+            <div class="text-sm font-semibold mb-2">{product.prices[0].label}</div>
+          )}
+          <p class="text-sm text-gray-700">{stripHtml(product.description)}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <button
+    id="order-btn"
+    class="bg-[#725CFA] text-white py-4 px-5 leading-[0.6] rounded-md font-semibold hover:bg-[#725CFA]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+    disabled
+  >
+    Commander
+  </button>
+</div>
+
+<script define:vars={{ maxTickets, apiHost, eventId }}>
+  // State management
+  let ticketCounts = {};
+  let appliedPromoCode = "";
+  let currentProducts = [];
+
+  // Initialize
+  function init() {
+    const ticketContainers = document.querySelectorAll('[data-product-id]');
+    ticketContainers.forEach(container => {
+      const productId = container.getAttribute('data-product-id');
+      ticketCounts[productId] = 0;
+    });
+
+    attachEventListeners();
+  }
+
+  // Attach event listeners
+  function attachEventListeners() {
+    // Promo code
+    document.getElementById('apply-promo-btn')?.addEventListener('click', handleApplyPromo);
+
+    // Ticket counters
+    document.querySelectorAll('.increment-btn').forEach(btn => {
+      btn.addEventListener('click', handleIncrement);
+    });
+
+    document.querySelectorAll('.decrement-btn').forEach(btn => {
+      btn.addEventListener('click', handleDecrement);
+    });
+
+    // Order button
+    document.getElementById('order-btn')?.addEventListener('click', handleOrder);
+  }
+
+  // Handle promo code
+  async function handleApplyPromo() {
+    const input = document.getElementById('promo-code-input');
+    const promoCode = input.value.trim();
+    const errorMsg = document.getElementById('error-message');
+
+    if (!promoCode) {
+      showError("Veuillez entrer un code promo");
+      return;
+    }
+
+    try {
+      // Validate promo code
+      const validateResponse = await fetch(`${apiHost}/api/public/events/${eventId}/promo-codes/${promoCode}`);
+      const validateData = await validateResponse.json();
+
+      if (!validateData.valid) {
+        showError("Code promo invalide");
+        return;
+      }
+
+      // Fetch event with promo code
+      const eventResponse = await fetch(`${apiHost}/api/public/events/${eventId}?promo_code=${promoCode}`);
+      const eventData = await eventResponse.json();
+
+      console.log('Event data with promo code:', eventData);
+      console.log('Products:', eventData.data.product_categories[0]?.products);
+
+      appliedPromoCode = promoCode;
+      updateProducts(eventData.data.product_categories[0]?.products || []);
+      hideError();
+
+    } catch (error) {
+      console.error('Error applying promo code:', error);
+      showError("Une erreur est survenue");
+    }
+  }
+
+  // Strip HTML tags from text
+  function stripHtmlClient(html) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  }
+
+  // Update products list
+  function updateProducts(products) {
+    console.log('updateProducts called with:', products);
+
+    // Filter to show only products where is_hidden is not true AND title is "Ticket d'accès professionnel"
+    const visibleProducts = products.filter(p =>
+      p.is_hidden !== true && p.title === "Ticket d'accès professionnel"
+    );
+
+    console.log('Visible products after filtering:', visibleProducts);
+
+    currentProducts = visibleProducts;
+    const container = document.getElementById('tickets-container');
+
+    // Reset ticket counts
+    ticketCounts = {};
+    visibleProducts.forEach(p => {
+      ticketCounts[p.id] = 0;
+    });
+
+    // Re-render the tickets
+    container.innerHTML = visibleProducts.map(product => `
+      <div
+        class="border border-gray-200 rounded-lg overflow-hidden"
+        data-product-id="${product.id}"
+        data-price-id="${product.prices[0]?.id}"
+      >
+        <!-- First row: Title and counter -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-200">
+          <div class="flex-1">
+            <h3 class="font-bold text-[#725CFA] uppercase">// ${product.title}</h3>
+          </div>
+          <div class="flex items-center gap-3 ml-4">
+            <button
+              class="decrement-btn w-8 h-8 flex items-center justify-center rounded border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+              </svg>
+            </button>
+            <span class="ticket-count text-lg font-semibold min-w-[2ch] text-center">0</span>
+            <button
+              class="increment-btn w-8 h-8 flex items-center justify-center rounded border border-[#725CFA] bg-[#725CFA] text-white hover:bg-[#725CFA]/90"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Second row: Price and description -->
+        <div class="p-4">
+          ${product.price === 0 ? '<div class="text-sm font-semibold text-gray-500 mb-2">Gratuit</div>' : ''}
+          ${product.price > 0 && product.prices[0]?.label ? `<div class="text-sm font-semibold mb-2">${product.prices[0].label}</div>` : ''}
+          <p class="text-sm text-gray-700">${stripHtmlClient(product.description || '')}</p>
+        </div>
+      </div>
+    `).join('');
+
+    // Re-attach event listeners for the new elements
+    document.querySelectorAll('.increment-btn').forEach(btn => {
+      btn.addEventListener('click', handleIncrement);
+    });
+
+    document.querySelectorAll('.decrement-btn').forEach(btn => {
+      btn.addEventListener('click', handleDecrement);
+    });
+
+    updateOrderButton();
+  }
+
+  // Handle increment
+  function handleIncrement(e) {
+    const container = e.target.closest('[data-product-id]');
+    const productId = container.getAttribute('data-product-id');
+    const totalTickets = Object.values(ticketCounts).reduce((a, b) => a + b, 0);
+
+    if (totalTickets < maxTickets) {
+      ticketCounts[productId]++;
+      updateTicketDisplay(container, productId);
+      updateOrderButton();
+    }
+  }
+
+  // Handle decrement
+  function handleDecrement(e) {
+    const container = e.target.closest('[data-product-id]');
+    const productId = container.getAttribute('data-product-id');
+
+    if (ticketCounts[productId] > 0) {
+      ticketCounts[productId]--;
+      updateTicketDisplay(container, productId);
+      updateOrderButton();
+    }
+  }
+
+  // Update ticket display
+  function updateTicketDisplay(container, productId) {
+    const countEl = container.querySelector('.ticket-count');
+    const decrementBtn = container.querySelector('.decrement-btn');
+    const incrementBtn = container.querySelector('.increment-btn');
+    const count = ticketCounts[productId];
+    const totalTickets = Object.values(ticketCounts).reduce((a, b) => a + b, 0);
+
+    countEl.textContent = count;
+    decrementBtn.disabled = count === 0;
+    incrementBtn.disabled = totalTickets >= maxTickets;
+  }
+
+  // Update order button
+  function updateOrderButton() {
+    const orderBtn = document.getElementById('order-btn');
+    const totalTickets = Object.values(ticketCounts).reduce((a, b) => a + b, 0);
+    orderBtn.disabled = totalTickets === 0;
+  }
+
+  // Handle order
+  async function handleOrder() {
+    const products = Object.entries(ticketCounts)
+      .filter(([_, quantity]) => quantity > 0)
+      .map(([productId, quantity]) => {
+        const container = document.querySelector(`[data-product-id="${productId}"]`);
+        const priceId = container.getAttribute('data-price-id');
+        return {
+          product_id: parseInt(productId),
+          quantities: [{
+            quantity: quantity,
+            price_id: parseInt(priceId)
+          }]
+        };
+      });
+
+    const orderData = {
+      promo_code: appliedPromoCode,
+      products: products
+    };
+
+    try {
+      const response = await fetch(`${apiHost}/api/public/events/${eventId}/order`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      const data = await response.json();
+
+      if (data.data?.short_id && data.data?.session_identifier) {
+        // Pass session_identifier in URL query parameter
+        const redirectUrl = `${apiHost}/checkout/1/${data.data.short_id}/details?session_identifier=${data.data.session_identifier}`;
+
+        console.log('Redirecting to:', redirectUrl);
+        window.location.href = redirectUrl;
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+      showError("Une erreur est survenue lors de la commande");
+    }
+  }
+
+  // Error handling
+  function showError(message) {
+    const errorMsg = document.getElementById('error-message');
+    errorMsg.textContent = message;
+    errorMsg.classList.remove('hidden');
+  }
+
+  function hideError() {
+    const errorMsg = document.getElementById('error-message');
+    errorMsg.classList.add('hidden');
+  }
+
+  // Initialize on load
+  init();
+</script>

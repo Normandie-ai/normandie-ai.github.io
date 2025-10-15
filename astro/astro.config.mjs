@@ -54,6 +54,12 @@ export default defineConfig({
         '@lib': resolve('./src/lib'),
         '@assets': resolve('./src/assets')
       }
+    },
+    preview: {
+      allowedHosts: [
+        'normandie-ai.github.io',
+        '.normandie.ai', // Allow all subdomains
+      ]
     }
   },
   integrations: [sentry(), spotlightjs()]

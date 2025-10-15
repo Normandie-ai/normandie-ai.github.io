@@ -1,0 +1,20 @@
+---
+interface Props {
+  imageUrl?: string;
+}
+
+const {
+  imageUrl = "/popcorn.png"
+} = Astro.props;
+---
+
+<div
+  class="h-full min-h-[400px] lg:min-h-screen"
+  style={{
+    backgroundImage: `url(${imageUrl})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+</div>
