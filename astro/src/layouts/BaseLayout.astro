@@ -9,6 +9,9 @@ const { meta = {
   ogImage: "/og-image.png",
 } } = Astro.props;
 const language = 'en';
+
+// Get base URL to handle GitHub Pages subdirectories
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <!DOCTYPE html>
@@ -19,8 +22,8 @@ const language = 'en';
     <title>{meta.title}</title>
     <meta name="description" content={meta.description} />
     <meta name="keywords" content={meta.keywords} />
-    <link href="/favicon.webp" rel="icon" media="(prefers-color-scheme: light)">
-    <link href="/favicon.webp" rel="icon" media="(prefers-color-scheme: dark)">
+    <link href={`${baseUrl}favicon.webp`} rel="icon" media="(prefers-color-scheme: light)">
+    <link href={`${baseUrl}favicon.webp`} rel="icon" media="(prefers-color-scheme: dark)">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:title" content={meta.title}>
