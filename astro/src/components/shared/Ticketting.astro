@@ -1,0 +1,30 @@
+---
+import { cn } from "@lib/cn";
+import { Image } from "astro:assets";
+import bgTicketting from "@assets/background-ticketting-button.webp";
+
+interface Props {
+  className?: string;
+}
+
+const { className = "" } = Astro.props;
+
+
+---
+
+<a id="ticketting-container" href="/billetterie" class={cn("hidden xs:block ml-4 px-6 py-2 bg-white/10 backdrop-blur-md rounded-lg border-1 border-white shadow-lg relative overflow-hidden", className)}>
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <Image
+      src={bgTicketting}
+      alt=""
+      class="absolute inset-0 w-full h-full object-cover z-5 mix-blend-screen"
+      loading="lazy"
+     />
+  </div>
+  
+  <div class="flex items-center space-x-2 relative z-10">
+    <span class="text-white font-bold text-lg tracking-wider">
+      Billetterie
+    </span>
+  </div>
+</a>
