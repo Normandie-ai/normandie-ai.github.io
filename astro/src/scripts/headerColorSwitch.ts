@@ -19,7 +19,8 @@ const DAY_COUNTER_BG_ID = "day-counter-bg";
 const DAY_COUNTER_TEXT_ID = "day-counter";
 const LOGO_WHITE_ID = "logo-white";
 const LOGO_COLOR_ID = "logo-color";
-
+const TICKETTING_ID = "ticketting-container";
+const TICKETTING_TEXT_ID = "ticketting-text";
 interface AnimateHeaderOptions {
   linkColor: string;
   counterBg: string;
@@ -29,6 +30,9 @@ interface AnimateHeaderOptions {
   logoColorOpacity: number;
   logoWhitePointer: string;
   logoColorPointer: string;
+  tickettingBg: string;
+  tickettingBorder: string;
+  tickettingTextColor: string;
 }
 
 function animateHeader({
@@ -40,6 +44,9 @@ function animateHeader({
   logoColorOpacity,
   logoWhitePointer,
   logoColorPointer,
+  tickettingBg,
+  tickettingBorder,
+  tickettingTextColor,
 }: AnimateHeaderOptions) {
   const links = document.querySelectorAll(HEADER_LINKS_SELECTOR);
   const dayCounter = document.getElementById(DAY_COUNTER_ID);
@@ -47,6 +54,8 @@ function animateHeader({
   const dayCounterText = document.getElementById(DAY_COUNTER_TEXT_ID);
   const logoWhite = document.getElementById(LOGO_WHITE_ID);
   const logoColor = document.getElementById(LOGO_COLOR_ID);
+  const ticketting = document.getElementById(TICKETTING_ID);
+  const tickettingText = document.getElementById(TICKETTING_TEXT_ID);
 
   if (
     !links.length ||
@@ -54,7 +63,9 @@ function animateHeader({
     !dayCounterBg ||
     !dayCounterText ||
     !logoWhite ||
-    !logoColor
+    !logoColor ||
+    !ticketting ||
+    !tickettingText
   )
     return;
 
@@ -76,6 +87,12 @@ function animateHeader({
     pointerEvents: logoColorPointer,
     duration: 0.2,
   });
+  gsap.to(ticketting, {
+    backgroundColor: tickettingBg,
+    borderColor: tickettingBorder,
+    duration: 0.2,
+  });
+  gsap.to(tickettingText, { color: tickettingTextColor, duration: 0.2 });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -101,6 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
           logoColorOpacity: 1,
           logoWhitePointer: "none",
           logoColorPointer: "auto",
+          tickettingBg: COLORS.SECONDARY_TRANSPARENT,
+          tickettingBorder: COLORS.SECONDARY,
+          tickettingTextColor: COLORS.SECONDARY,
         }),
       onEnterBack: () =>
         animateHeader({
@@ -112,6 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
           logoColorOpacity: 1,
           logoWhitePointer: "none",
           logoColorPointer: "auto",
+          tickettingBg: COLORS.SECONDARY_TRANSPARENT,
+          tickettingBorder: COLORS.SECONDARY,
+          tickettingTextColor: COLORS.SECONDARY,
         }),
       onLeave: () =>
         animateHeader({
@@ -123,6 +146,9 @@ document.addEventListener("DOMContentLoaded", () => {
           logoColorOpacity: 0,
           logoWhitePointer: "auto",
           logoColorPointer: "none",
+          tickettingBg: COLORS.PRIMARY_TRANSPARENT,
+          tickettingBorder: COLORS.PRIMARY,
+          tickettingTextColor: COLORS.PRIMARY,
         }),
       onLeaveBack: () =>
         animateHeader({
@@ -134,6 +160,9 @@ document.addEventListener("DOMContentLoaded", () => {
           logoColorOpacity: 0,
           logoWhitePointer: "auto",
           logoColorPointer: "none",
+          tickettingBg: COLORS.PRIMARY_TRANSPARENT,
+          tickettingBorder: COLORS.PRIMARY,
+          tickettingTextColor: COLORS.PRIMARY,
         }),
     });
   }
