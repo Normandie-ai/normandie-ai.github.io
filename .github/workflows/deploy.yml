@@ -57,7 +57,11 @@ jobs:
           HIEVENTS_EVENT_ID: 2
           MAX_TICKETS: ${{ secrets.MAX_TICKETS }}
           MODE: ${{ secrets.MODE }}
-          # Add any other environment variables you need
+          # Matomo Analytics
+          MATOMO_ENABLED: ${{ secrets.MATOMO_ENABLED }}
+          MATOMO_HOST: ${{ secrets.MATOMO_HOST }}
+          MATOMO_SITE_ID: ${{ secrets.MATOMO_SITE_ID }}
+          MATOMO_DISABLE_COOKIES: ${{ secrets.MATOMO_DISABLE_COOKIES }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
