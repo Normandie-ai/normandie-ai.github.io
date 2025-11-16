@@ -41,6 +41,10 @@ interface Conference {
 	description: string;
 	room: Room;
 	categories: Category[];
+	background?: {
+		url: string;
+		alternativeText: string;
+	};
 }
 
 interface StageProgram {
@@ -74,17 +78,29 @@ const { anchor, zIndex, StageProgram, hasNotch, previousBlockHasNotch } = Astro.
 					<div class="mb-16 last:mb-0">
 						<AvegaTitle
 							title={stage.title}
-							level={3}
+							level={5}
 							color="#CA5FF9"
 							className="mb-8"
 						/>
 
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 							{stage.conferences && stage.conferences.map((conference) => {
+								const backgroundImage = conference.background;
+								const backgroundUrl = backgroundImage ? getImageUrl(backgroundImage.url, strapiUrl) : null;
 								return (
 									<a href={`/programme/${conference.slug}`} class="conference-card relative rounded-xl overflow-hidden h-[320px] w-full p-3 block transition-transform hover:scale-105 z-10">
-										{/* Background gradient */}
-										<div class="absolute inset-0 w-full h-full bg-gradient-to-br from-purple-600 to-blue-600" />
+										{/* Background image or gradient fallback */}
+										{backgroundImage && backgroundUrl ? (
+											<Image
+												src={backgroundUrl}  
+												alt={backgroundImage.alternativeText || conference.title}
+												class="absolute inset-0 w-full h-full object-cover"
+												width={400}
+												height={320}
+											/>
+										) : (
+											<div class="absolute inset-0 w-full h-full bg-gradient-to-br from-purple-600 to-blue-600" />
+										)}
 
 										<div class="relative h-full flex flex-col justify-between p-3 border border-white rounded-lg">
 											<div class="conference-title-no-shadow">
