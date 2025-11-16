@@ -1,0 +1,138 @@
+---
+import AvegaTitle from "@components/shared/AvegaTitle.astro";
+import NotchArrow from "@components/shared/NotchArrow.astro";
+import { cn } from "@lib/cn";
+import { getImageUrl } from "@lib/imageUtils";
+import { configureMarkdown, parseMarkdown } from "@lib/markdown";
+import { Image } from "astro:assets";
+
+type SponsorType = "institutionnel" | "platinium" | "gold" | "silver";
+
+interface Sponsor {
+	id: number;
+	name: string;
+	logo?: {
+		url: string;
+		alternativeText: string;
+	};
+	type: SponsorType;
+	url: string;
+}
+
+interface Props {
+	anchor?: string;
+	zIndex: number;
+	title: string;
+	description: string;
+	sponsors: Sponsor[];
+	hasNotch: boolean;
+	previousBlockHasNotch: boolean;
+}
+
+const strapiUrl = import.meta.env.STRAPI_URL;
+const { anchor, zIndex, title, description, sponsors, hasNotch, previousBlockHasNotch } = Astro.props;
+
+// Configure markdown
+configureMarkdown();
+const parsedDescription = description ? parseMarkdown(description) : null;
+
+// Group sponsors by type
+const sponsorsByType: Record<SponsorType, Sponsor[]> = {
+	institutionnel: [],
+	platinium: [],
+	gold: [],
+	silver: []
+};
+
+sponsors.forEach(sponsor => {
+	if (sponsor.type && sponsorsByType[sponsor.type]) {
+		sponsorsByType[sponsor.type].push(sponsor);
+	}
+});
+
+// Define titles for each type
+const typeTitles: Record<SponsorType, string> = {
+	institutionnel: "Partenaires institutionnels",
+	platinium: "Sponsors Platinium",
+	gold: "Sponsors Gold",
+	silver: "Sponsors Silver"
+};
+
+// Filter out empty types
+const sponsorTypes = (Object.keys(sponsorsByType) as SponsorType[]).filter(
+	type => sponsorsByType[type].length > 0
+);
+
+---
+
+<section
+	id={anchor}
+	class={`relative ${hasNotch ? 'pb-notch' : ''} ${previousBlockHasNotch ? 'mt-notch' : ''}`}
+	style={{ zIndex: zIndex }}
+	data-header-color={true}
+>
+	<div class={`relative bg-white`} data-notch-border-color={hasNotch ? '#1B1C5D' : undefined}>
+		<div class={cn("mx-auto max-w-screen-xl px-6 xs:px-8 w-full py-24 xs:py-32 md:py-48", !previousBlockHasNotch && "!pt-0")}>
+			<div class="bg-white">
+				<!-- Main title -->
+				{title && (
+					<AvegaTitle
+						title={title}
+						level={4}
+						color="#725CFA"
+						className="mb-8"
+					/>
+				)}
+
+				<!-- Description -->
+				{parsedDescription && (
+					<div class="mt-4 prose prose-strong:font-bold max-w-none" set:html={parsedDescription}></div>
+				)}
+
+				<!-- Sponsors by type -->
+				<div class="space-y-16 mt-20">
+					{sponsorTypes.map((type) => (
+						<div>
+							<AvegaTitle
+								title={typeTitles[type]}
+								level={5}
+								color="#CA5FF9"
+								className="mb-8 mx-auto text-center"
+							/>
+
+							<div class="flex flex-wrap items-center justify-center gap-8">
+								{sponsorsByType[type].map((sponsor) => {
+									const logoImage = sponsor.logo;
+									const logoUrl = logoImage ? getImageUrl(logoImage.url, strapiUrl) : null;
+
+									return (
+										<a
+											href={sponsor.url}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="transition-transform hover:scale-110"
+										>
+											{logoImage && logoUrl && (
+												<Image
+													src={logoUrl}
+													alt={logoImage.alternativeText || sponsor.name}
+													width={200}
+													height={100}
+													class="max-w-[200px] h-auto object-contain"
+												/>
+											)}
+										</a>
+									);
+								})}
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+
+		{hasNotch && (
+			<NotchArrow color="#9A89FD" />
+		)}
+	</div>
+</section>
