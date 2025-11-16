@@ -1,0 +1,177 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import Header from "@components/blocks/Header.astro";
+import fetchApi from "@lib/strapi";
+import qs from "qs";
+import { Image } from "astro:assets";
+import { getImageUrl } from "@lib/imageUtils";
+import { configureMarkdown, parseMarkdown } from "@lib/markdown";
+
+interface Category {
+	id: number;
+	title: string;
+	icon?: {
+		url: string;
+		alternativeText?: string;
+	};
+}
+
+interface Speaker {
+	id: number;
+	firstname: string;
+	lastname: string;
+	company?: string;
+	description?: string;
+	image?: {
+		url: string;
+		alternativeText?: string;
+	};
+}
+
+interface Room {
+	id: number;
+	title: string;
+}
+
+interface Conference {
+	id: number;
+	slug: string;
+	title: string;
+	speakers: Speaker[];
+	startTime: string;
+	endTime: string;
+	duration: string;
+	description?: string;
+	room: Room;
+	categories: Category[];
+}
+
+export async function getStaticPaths() {
+	const query = qs.stringify(
+		{
+			populate: {
+				speakers: {
+					populate: ["image"],
+				},
+				room: true,
+				categories: {
+					populate: ["icon"],
+				},
+			},
+		},
+		{
+			encodeValuesOnly: true,
+		},
+	);
+
+	const conferences = await fetchApi({
+		endpoint: `conferences?${query}`,
+		wrappedByKey: "data",
+	});
+
+	return Array.isArray(conferences)
+		? conferences.map((conference) => ({
+				params: {
+					slug: conference.slug,
+				},
+				props: conference,
+			}))
+		: [];
+}
+
+const conference = Astro.props as Conference;
+const strapiUrl = import.meta.env.STRAPI_URL;
+
+// Configure marked for markdown parsing
+configureMarkdown();
+const parsedContent = conference.description ? parseMarkdown(conference.description) : "";
+---
+
+<PageLayout shownNavbar={false}>
+	<Header
+		title={conference.title}
+		backgroundImage={{
+			url: "/uploads/BG_pages_annexes_resultat_67e3d8aab5.webp",
+			alternativeText: "Conference background",
+		}}
+	/>
+
+	<section class="bg-white pt-12 xs:py-12 lg:py-24">
+		<div class="max-w-screen-xl mx-auto px-6 xs:px-8 md:px-16">
+			<!-- Badges -->
+			{conference.categories && conference.categories.length > 0 && (
+				<div class="flex flex-wrap gap-2">
+					{conference.categories.map((category: Category) => {
+						const categoryIcon = category.icon;
+						const iconUrl = categoryIcon ? getImageUrl(categoryIcon.url, strapiUrl) : null;
+						return (
+							<div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm border">
+								{iconUrl && (
+									<Image
+										src={iconUrl}
+										alt={category.title}
+										width="16"
+										height="16"
+										class="size-4 brightness-0"
+									/>
+								)}
+								<span class="text-sm font-medium">{category.title}</span>
+							</div>
+						);
+					})}
+					<div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm border">
+						<span class="text-sm font-medium">{conference.startTime} - {conference.endTime}</span>
+					</div>
+					<div class="flex items-center gap-2 0 px-4 py-2 rounded-full text-sm border">
+						<span class="text-sm font-medium">{conference.duration}</span>
+					</div>
+				</div>
+			)}
+
+			{conference.description && (
+				<div class="py-10" set:html={parsedContent}></div>
+			)}
+
+			<hr class="border-gray-200">
+
+			<!-- Speakers -->
+			{conference.speakers && conference.speakers.length > 0 && (
+				<div class="space-y-6 py-8 sm:py-12">
+					{conference.speakers.map((speaker: Speaker) => {
+						const speakerImage = speaker.image;
+						const speakerImageUrl = speakerImage ? getImageUrl(speakerImage.url, strapiUrl) : null;
+						const speakerDescription = speaker.description ? parseMarkdown(speaker.description) : null;
+
+						return (
+							<div class="flex flex-col gap-6">
+								{/* Speaker header */}
+								<div class="flex items-center gap-6">
+									{speakerImageUrl && (
+										<Image
+											src={speakerImageUrl}
+											alt={`${speaker.firstname} ${speaker.lastname}`}
+											width="120"
+											height="120"
+											class="size-24 md:size-32 rounded-full object-cover border-2 flex-shrink-0"
+										/>
+									)}
+									<div>
+										<h3 class="text-2xl md:text-3xl font-bold text-gray-900">
+											{speaker.firstname} {speaker.lastname}
+										</h3>
+										<p>{speaker.company}</p>
+									</div>
+								</div>
+
+								{/* Speaker description */}
+								{speakerDescription && (
+									<div class="prose max-w-none" set:html={speakerDescription}></div>
+								)}
+							</div>
+						);
+					})}
+				</div>
+			)}
+		</div>
+	</section>
+</PageLayout>
