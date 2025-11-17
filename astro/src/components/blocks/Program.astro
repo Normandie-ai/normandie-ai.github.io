@@ -148,7 +148,7 @@ const { anchor, zIndex, StageProgram, hasNotch, previousBlockHasNotch } = Astro.
 														const categoryIcon = category.icon;
 														const iconUrl = categoryIcon ? getImageUrl(categoryIcon.url, strapiUrl) : null;
 														return (
-															<div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full text-sm text-white border border-white">
+															<div class="flex items-center gap-2 bg-white/20 px-2 py-1 rounded-full text-sm text-white border border-white">
 																{iconUrl && (
 																	<Image
 																		src={iconUrl}
@@ -162,10 +162,10 @@ const { anchor, zIndex, StageProgram, hasNotch, previousBlockHasNotch } = Astro.
 															</div>
 														);
 													})}
-													<div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full text-sm text-white border border-white">
+													<div class="flex items-center gap-2 bg-white/20 px-2 py-1 rounded-full text-sm text-white border border-white">
 														<span class="text-xs">{conference.startTime} - {conference.endTime}</span>
 													</div>
-													<div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full text-sm text-white border border-white">
+													<div class="flex items-center gap-2 bg-white/20 px-2 py-1 rounded-full text-sm text-white border border-white">
 														<span class="text-xs">{conference.duration}</span>
 													</div>
 												</div>
