@@ -87,7 +87,7 @@ const arrowColor = variant === "dark" ? "#ffffff" : "#CF65FB";
                   alt={titleImage.alternativeText || ""}
                   width="337"
                   height="70"
-                  loading="eager"
+                  loading="lazy"
               />
             )}
             {title && <h2 class="text-2xl font-semibold sm:text-3xl" style={variant === "dark" ? `color: white` : ''}>
@@ -112,6 +112,7 @@ const arrowColor = variant === "dark" ? "#ffffff" : "#CF65FB";
                     src={getImageUrl(images[0].url, strapiUrl)}
                     alt={images[0].alternativeText || "Image 1"}
                     class="w-full h-full object-cover rounded-2xl"
+                    loading="lazy"
                   />
                   {variant !== "dark" && (
                     <div class="absolute inset-0 border-2 border-[#5C89FA] rounded-2xl translate-x-2 translate-y-2 -z-10"></div>
@@ -124,6 +125,7 @@ const arrowColor = variant === "dark" ? "#ffffff" : "#CF65FB";
                     src={getImageUrl(images[1].url, strapiUrl)}
                     alt={images[1].alternativeText || "Image 2"}
                     class="w-full h-full object-cover rounded-2xl"
+                    loading="lazy"
                   />
                   {variant !== "dark" && (
                     <div class="absolute inset-0 border-2 border-[#5C89FA] rounded-2xl translate-x-2 translate-y-2 -z-10"></div>
@@ -136,6 +138,7 @@ const arrowColor = variant === "dark" ? "#ffffff" : "#CF65FB";
                     src={getImageUrl(images[2].url, strapiUrl)}
                     alt={images[2].alternativeText || "Image 3"}
                     class="w-full h-full object-cover rounded-2xl"
+                    loading="lazy"
                   />
                   {variant !== "dark" && (
                     <div class="absolute inset-0 border-2 border-[#5C89FA] rounded-2xl translate-x-2 translate-y-2 -z-10"></div>
@@ -148,6 +151,7 @@ const arrowColor = variant === "dark" ? "#ffffff" : "#CF65FB";
                     src={getImageUrl(images[3].url, strapiUrl)}
                     alt={images[3].alternativeText || "Image 4"}
                     class="w-full h-full object-cover rounded-2xl"
+                    loading="lazy"
                   />
                   {variant !== "dark" && (
                     <div class="absolute inset-0 border-2 border-[#5C89FA] rounded-2xl translate-x-2 translate-y-2 -z-10"></div>
@@ -162,6 +166,7 @@ const arrowColor = variant === "dark" ? "#ffffff" : "#CF65FB";
                     src={getImageUrl(images[0].url, strapiUrl)}
                     alt={images[0].alternativeText || "Image 1"}
                     class="w-full h-full object-cover rounded-2xl"
+                    loading="lazy"
                   />
                   {variant !== "dark" && (
                     <div class="absolute inset-0 border-2 border-[#5C89FA] rounded-2xl translate-x-2 translate-y-2 -z-10"></div>
@@ -174,6 +179,7 @@ const arrowColor = variant === "dark" ? "#ffffff" : "#CF65FB";
                     src={getImageUrl(images[1].url, strapiUrl)}
                     alt={images[1].alternativeText || "Image 2"}
                     class="w-full h-full object-cover rounded-2xl"
+                    loading="lazy"
                   />
                   {variant !== "dark" && (
                     <div class="absolute inset-0 border-2 border-[#5C89FA] rounded-2xl translate-x-2 translate-y-2 -z-10"></div>
@@ -200,6 +206,7 @@ const arrowColor = variant === "dark" ? "#ffffff" : "#CF65FB";
                       src={getImageUrl(image.url, strapiUrl)}
                       alt={image.alternativeText || `Image ${index + 1}`}
                       class="w-full h-full object-cover rounded-2xl"
+                      loading="lazy"
                     />
                     {variant !== "dark" && (
                       <div class="absolute inset-0 border-2 border-[#5C89FA] rounded-2xl translate-x-2 translate-y-2 -z-10"></div>
@@ -215,6 +222,7 @@ const arrowColor = variant === "dark" ? "#ffffff" : "#CF65FB";
                       src={getImageUrl(image.url, strapiUrl)}
                       alt={image.alternativeText || `Image ${index + 1}`}
                       class="w-full h-full object-cover rounded-2xl"
+                      loading="lazy"
                     />
                     {variant !== "dark" && (
                       <div class="absolute inset-0 border-2 border-[#5C89FA] rounded-2xl translate-x-2 translate-y-2 -z-10"></div>

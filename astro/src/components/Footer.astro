@@ -57,7 +57,7 @@ const iconUrl = getImageUrl(icon?.url, strapiUrl);
                         alt={logo?.alternativeText || "Logo"} 
                         width="204"
                         height="102"
-                        loading="eager"
+                        loading="lazy"
                         class="h-auto w-full"
                     />
                 </a>
@@ -80,6 +80,7 @@ const iconUrl = getImageUrl(icon?.url, strapiUrl);
                 alt={icon?.alternativeText || "Popcorn Box"}
                 width="350"
                 height="350"
+                loading="lazy"
                 class="absolute top-0 right-0 -translate-y-1/2 w-[350px] z-10 hidden xl:block"
             />
         )}
