@@ -5,14 +5,15 @@ import { cn } from "@lib/cn";
 interface Props {
 	title: string;
 	level?: 1 | 2 | 3 | 4 | 5 | 6;
+	size?: 1 | 2 | 3 | 4 | 5 | 6;
 	color?: string;
 	className?: string;
 }
 
-const { title, level = 1, className, color = "#ffffff" } = Astro.props;
+const { title, level = 1, size, className, color = "#ffffff" } = Astro.props;
 const Tag = `h${level}` as keyof HTMLElementTagNameMap;
 
-// Define text sizes based on heading level
+// Define text sizes (independent of semantic level)
 const textSizeClasses = {
 	1: 'text-4xl xs:text-5xl md:text-6xl leading-12 xs:leading-16 md:leading-18',
 	2: 'text-4xl md:text-5xl leading-18',
@@ -22,7 +23,9 @@ const textSizeClasses = {
 	6: 'text-lg md:text-xl'
 };
 
-const sizeClass = textSizeClasses[level];
+// Use size prop if provided, otherwise fall back to level for backwards compatibility
+const visualSize = size ?? level;
+const sizeClass = textSizeClasses[visualSize];
 
 const shadowColor = hexToRgba(color, 0.16);
 ---
