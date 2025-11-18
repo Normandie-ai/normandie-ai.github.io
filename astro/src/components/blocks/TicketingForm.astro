@@ -115,6 +115,20 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
     ))}
   </div>
 
+  {allSoldOut && (
+    <div id="waitlist-section" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
+      <p class="text-gray-700 mb-4">Les places sont actuellement épuisées. Inscrivez-vous sur la liste d'attente pour être informé en cas de désistement.</p>
+      <a
+        href="https://n8n.abecedaire-studio.com/form/cde8af91-8d51-42c2-b7c3-1ccdf2676e73"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-block bg-[#725CFA] text-white py-3 px-6 rounded-md font-semibold hover:bg-[#725CFA]/90 transition-colors"
+      >
+        S'inscrire sur la liste d'attente
+      </a>
+    </div>
+  )}
+
   {!allSoldOut && (
     <button
       id="order-btn"
@@ -285,11 +299,34 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
       btn.addEventListener('click', handleDecrement);
     });
 
-    // Show/hide order button based on sold out status
+    // Show/hide order button and waitlist based on sold out status
     const allSoldOut = visibleProducts.length > 0 && visibleProducts.every(p => p.is_sold_out === true);
     const orderBtn = document.getElementById('order-btn');
+    const waitlistSection = document.getElementById('waitlist-section');
+
     if (orderBtn) {
       orderBtn.style.display = allSoldOut ? 'none' : 'block';
+    }
+
+    // Handle waitlist section visibility
+    if (allSoldOut && !waitlistSection) {
+      // Create waitlist section if it doesn't exist
+      const waitlistHtml = `
+        <div id="waitlist-section" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
+          <p class="text-gray-700 mb-4">Les places sont actuellement épuisées. Inscrivez-vous sur la liste d'attente pour être informé en cas de désistement.</p>
+          <a
+            href="https://n8n.abecedaire-studio.com/form/cde8af91-8d51-42c2-b7c3-1ccdf2676e73"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block bg-[#725CFA] text-white py-3 px-6 rounded-md font-semibold hover:bg-[#725CFA]/90 transition-colors"
+          >
+            S'inscrire sur la liste d'attente
+          </a>
+        </div>
+      `;
+      container.insertAdjacentHTML('afterend', waitlistHtml);
+    } else if (!allSoldOut && waitlistSection) {
+      waitlistSection.remove();
     }
 
     updateOrderButton();
