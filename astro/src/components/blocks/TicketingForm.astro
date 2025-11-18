@@ -30,6 +30,8 @@ const {
   eventId,
 } = Astro.props;
 
+const waitlistFormUrl = import.meta.env.PUBLIC_WAITLIST_FORM_URL;
+
 // Function to strip HTML tags from description
 function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, '');
@@ -119,7 +121,7 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
     <div id="waitlist-section" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
       <p class="text-gray-700 mb-4">Les places sont actuellement épuisées. Inscrivez-vous sur la liste d'attente pour être informé en cas de désistement.</p>
       <a
-        href="https://n8n.abecedaire-studio.com/form/cde8af91-8d51-42c2-b7c3-1ccdf2676e73"
+        href={waitlistFormUrl}
         target="_blank"
         rel="noopener noreferrer"
         class="inline-block bg-[#725CFA] text-white py-3 px-6 rounded-md font-semibold hover:bg-[#725CFA]/90 transition-colors"
@@ -140,7 +142,7 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
   )}
 </div>
 
-<script define:vars={{ maxTickets, apiHost, eventId }}>
+<script define:vars={{ maxTickets, apiHost, eventId, waitlistFormUrl }}>
   // State management
   let ticketCounts = {};
   let appliedPromoCode = "";
@@ -315,7 +317,7 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
         <div id="waitlist-section" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
           <p class="text-gray-700 mb-4">Les places sont actuellement épuisées. Inscrivez-vous sur la liste d'attente pour être informé en cas de désistement.</p>
           <a
-            href="https://n8n.abecedaire-studio.com/form/cde8af91-8d51-42c2-b7c3-1ccdf2676e73"
+            href="${waitlistFormUrl}"
             target="_blank"
             rel="noopener noreferrer"
             class="inline-block bg-[#725CFA] text-white py-3 px-6 rounded-md font-semibold hover:bg-[#725CFA]/90 transition-colors"
