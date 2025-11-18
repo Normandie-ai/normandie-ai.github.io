@@ -13,6 +13,7 @@ services:
         - MATOMO_HOST=${MATOMO_HOST}
         - MATOMO_SITE_ID=${MATOMO_SITE_ID}
         - MATOMO_DISABLE_COOKIES=${MATOMO_DISABLE_COOKIES}
+        - PUBLIC_WAITLIST_FORM_URL=${PUBLIC_WAITLIST_FORM_URL}
     container_name: normandieai-astro
     ports:
       - "4321:4321"
@@ -22,4 +23,5 @@ services:
       - HIEVENTS_EVENT_ID=${HIEVENTS_EVENT_ID}
       - MAX_TICKETS=${MAX_TICKETS}
       - MODE=${MODE}
+      - PUBLIC_WAITLIST_FORM_URL=${PUBLIC_WAITLIST_FORM_URL}
     restart: unless-stopped

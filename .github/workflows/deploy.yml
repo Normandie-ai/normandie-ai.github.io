@@ -62,6 +62,7 @@ jobs:
           MATOMO_HOST: ${{ secrets.MATOMO_HOST }}
           MATOMO_SITE_ID: ${{ secrets.MATOMO_SITE_ID }}
           MATOMO_DISABLE_COOKIES: ${{ secrets.MATOMO_DISABLE_COOKIES }}
+          PUBLIC_WAITLIST_FORM_URL: ${{ secrets.PUBLIC_WAITLIST_FORM_URL }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
