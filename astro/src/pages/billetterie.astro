@@ -31,7 +31,8 @@ try {
         type: p.type,
         max_per_order: p.max_per_order,
         min_per_order: p.min_per_order,
-        is_sold_out: p.is_sold_out,
+        // is_sold_out: p.is_sold_out,
+        is_sold_out: true, // HARDCODED: Always sold-out, ignoring API status
       }));
   }
 
