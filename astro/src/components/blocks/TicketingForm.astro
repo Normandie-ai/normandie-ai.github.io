@@ -25,7 +25,7 @@ const {
   title = "INSCRIPTION À L'ÉVÉNEMENT !",
   // description = "Parce que l'intelligence artificielle ne se résume pas à une seule discipline, la journée proposera des contenus variés entre enjeux stratégiques, défis sociétaux, innovations techniques et dimensions créatives. Une occasion unique de comprendre l'IA dans toute sa richesse... et sa complexité.",
   products,
-  maxTickets = 4,
+  maxTickets,
   apiHost,
   eventId,
 } = Astro.props;
@@ -37,8 +37,8 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, '');
 }
 
-// Check if all products are sold out
-const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
+// By default, show all products as sold-out (requiring promo code)
+const allSoldOut = true;
 ---
 
 <div class="flex flex-col gap-8 h-full justify-center px-8 xs:px-16 py-12 items-end">
@@ -72,15 +72,13 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
         class="border border-gray-200 rounded-lg overflow-hidden"
         data-product-id={product.id}
         data-price-id={product.prices[0]?.id}
-        data-sold-out={product.is_sold_out ? "true" : "false"}
+        data-sold-out="true"
       >
         <!-- First row: Title and counter -->
         <div class="flex items-center justify-between p-4 border-b border-gray-200">
           <div class="flex-1 flex items-center gap-2">
             <h3 class="font-bold text-[#725CFA] uppercase">// {product.title}</h3>
-            {product.is_sold_out && (
-              <span class="text-xs font-semibold bg-gray-200 text-gray-500 px-2 py-1 rounded">SOLD-OUT</span>
-            )}
+            <span class="text-xs font-semibold bg-gray-200 text-gray-500 px-2 py-1 rounded">SOLD-OUT</span>
           </div>
           <div class="flex items-center gap-3 ml-4">
             <button
@@ -93,8 +91,8 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
             </button>
             <span class="ticket-count text-lg font-semibold min-w-[2ch] text-center">0</span>
             <button
-              class={`increment-btn w-8 h-8 flex items-center justify-center rounded border ${product.is_sold_out ? 'border-gray-300 bg-gray-300 text-gray-500 cursor-not-allowed' : 'border-[#725CFA] bg-[#725CFA] text-white hover:bg-[#725CFA]/90'}`}
-              disabled={product.is_sold_out}
+              class="increment-btn w-8 h-8 flex items-center justify-center rounded border border-gray-300 bg-gray-300 text-gray-500 cursor-not-allowed"
+              disabled
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -180,38 +178,79 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
   // Handle promo code
   async function handleApplyPromo() {
     const input = document.getElementById('promo-code-input');
-    const promoCode = input.value.trim();
-    const errorMsg = document.getElementById('error-message');
+    const promoCode = input.value.trim().toUpperCase();
+    const applyBtn = document.getElementById('apply-promo-btn');
 
     if (!promoCode) {
       showError("Veuillez entrer un code promo");
       return;
     }
 
-    try {
-      // Validate promo code
-      const validateResponse = await fetch(`${apiHost}/api/public/events/${eventId}/promo-codes/${promoCode}`);
-      const validateData = await validateResponse.json();
+    // Hide any previous errors
+    hideError();
 
-      if (!validateData.valid) {
-        showError("Code promo invalide");
+    // Show loading state
+    applyBtn.textContent = 'Validation...';
+    applyBtn.disabled = true;
+
+    try {
+      // First, validate the promo code
+      const validateResponse = await fetch(`${apiHost}/api/public/events/${eventId}/promo-codes/${promoCode}`); 
+
+      if (!validateResponse.ok) {
+        showError("Code promo invalide ou expiré");
+        applyBtn.textContent = 'Appliquer';
+        applyBtn.disabled = false;
         return;
       }
 
-      // Fetch event with promo code
+      const validateData = await validateResponse.json();
+
+      // Check if the code is valid
+      if (!validateData || validateData.valid === false) {
+        showError("Code promo invalide ou expiré");
+        applyBtn.textContent = 'Appliquer';
+        applyBtn.disabled = false;
+        return;
+      }
+
+      // If valid, fetch event with promo code
       const eventResponse = await fetch(`${apiHost}/api/public/events/${eventId}?promo_code=${promoCode}`);
+
+      if (!eventResponse.ok) {
+        showError("Erreur lors de la récupération des produits");
+        applyBtn.textContent = 'Appliquer';
+        applyBtn.disabled = false;
+        return;
+      }
+
       const eventData = await eventResponse.json();
 
-      console.log('Event data with promo code:', eventData);
-      console.log('Products:', eventData.data.product_categories[0]?.products);
+      // Check if we have products
+      if (!eventData.data?.product_categories?.[0]?.products) {
+        showError("Aucun produit disponible avec ce code promo");
+        applyBtn.textContent = 'Appliquer';
+        applyBtn.disabled = false;
+        return;
+      }
 
+      // Success - apply the promo code
       appliedPromoCode = promoCode;
-      updateProducts(eventData.data.product_categories[0]?.products || []);
-      hideError();
+      updateProducts(eventData.data.product_categories[0].products);
+
+      // Update input to show validated code
+      input.value = promoCode;
+      input.disabled = true;
+      applyBtn.textContent = '✓ Validé';
+
+      // Show success message
+      showSuccess("Code promo appliqué avec succès !");
 
     } catch (error) {
       console.error('Error applying promo code:', error);
-      showError("Une erreur est survenue");
+      showError("Une erreur est survenue lors de la validation du code promo");
+      applyBtn.textContent = 'Appliquer';
+      applyBtn.disabled = false;
     }
   }
 
@@ -224,14 +263,10 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
 
   // Update products list
   function updateProducts(products) {
-    console.log('updateProducts called with:', products);
-
     // Filter to show only products where is_hidden is not true AND title is "Ticket d'accès professionnel"
     const visibleProducts = products.filter(p =>
       p.is_hidden !== true && p.title === "Ticket d'accès professionnel"
     );
-
-    console.log('Visible products after filtering:', visibleProducts);
 
     currentProducts = visibleProducts;
     const container = document.getElementById('tickets-container');
@@ -303,11 +338,34 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
 
     // Show/hide order button and waitlist based on sold out status
     const allSoldOut = visibleProducts.length > 0 && visibleProducts.every(p => p.is_sold_out === true);
-    const orderBtn = document.getElementById('order-btn');
+    let orderBtn = document.getElementById('order-btn');
     const waitlistSection = document.getElementById('waitlist-section');
 
-    if (orderBtn) {
-      orderBtn.style.display = allSoldOut ? 'none' : 'block';
+    // Handle order button visibility/creation
+    if (!allSoldOut) {
+      // Products are available, show/create order button
+      if (!orderBtn) {
+        // Create order button if it doesn't exist
+        const orderBtnHtml = `
+          <button
+            id="order-btn"
+            class="bg-[#725CFA] text-white py-4 px-5 leading-[0.6] rounded-md font-semibold hover:bg-[#725CFA]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled
+          >
+            Commander
+          </button>
+        `;
+        // Find the parent container and append the button
+        const parentContainer = container.parentElement;
+        parentContainer.insertAdjacentHTML('beforeend', orderBtnHtml);
+        orderBtn = document.getElementById('order-btn');
+        orderBtn?.addEventListener('click', handleOrder);
+      } else {
+        orderBtn.style.display = 'block';
+      }
+    } else if (orderBtn) {
+      // Products are sold out, hide order button
+      orderBtn.style.display = 'none';
     }
 
     // Handle waitlist section visibility
@@ -367,17 +425,20 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
     const incrementBtn = container.querySelector('.increment-btn');
     const count = ticketCounts[productId];
     const totalTickets = Object.values(ticketCounts).reduce((a, b) => a + b, 0);
+    const isSoldOut = container.getAttribute('data-sold-out') === 'true';
 
     countEl.textContent = count;
     decrementBtn.disabled = count === 0;
-    incrementBtn.disabled = totalTickets >= maxTickets;
+    incrementBtn.disabled = isSoldOut || totalTickets >= maxTickets;
   }
 
   // Update order button
   function updateOrderButton() {
     const orderBtn = document.getElementById('order-btn');
-    const totalTickets = Object.values(ticketCounts).reduce((a, b) => a + b, 0);
-    orderBtn.disabled = totalTickets === 0;
+    if (orderBtn) {
+      const totalTickets = Object.values(ticketCounts).reduce((a, b) => a + b, 0);
+      orderBtn.disabled = totalTickets === 0;
+    }
   }
 
   // Handle order
@@ -427,7 +488,6 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
         // Pass session_identifier in URL query parameter
         const redirectUrl = `${apiHost}/checkout/${eventId}/${data.data.short_id}/details?session_identifier=${data.data.session_identifier}`;
 
-        console.log('Redirecting to:', redirectUrl);
         window.location.href = redirectUrl;
       }
     } catch (error) {
@@ -440,6 +500,14 @@ const allSoldOut = products.length > 0 && products.every(p => p.is_sold_out);
   function showError(message) {
     const errorMsg = document.getElementById('error-message');
     errorMsg.textContent = message;
+    errorMsg.className = 'text-red-600 text-sm';
+    errorMsg.classList.remove('hidden');
+  }
+
+  function showSuccess(message) {
+    const errorMsg = document.getElementById('error-message');
+    errorMsg.textContent = message;
+    errorMsg.className = 'text-green-600 text-sm';
     errorMsg.classList.remove('hidden');
   }
 

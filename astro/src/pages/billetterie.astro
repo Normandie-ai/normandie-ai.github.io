@@ -7,7 +7,7 @@ import TicketingSidebar from "@components/blocks/TicketingSidebar.astro";
 // Get environment variables
 const HIEVENTS_API_HOST = import.meta.env.HIEVENTS_API_HOST || "https://api.hi.events";
 const HIEVENTS_EVENT_ID = import.meta.env.HIEVENTS_EVENT_ID || "1";
-const MAX_TICKETS = parseInt(import.meta.env.MAX_TICKETS || "4");
+const MAX_TICKETS = parseInt(import.meta.env.MAX_TICKETS || "1");
 
 // Fetch event data
 let products = [];
@@ -71,3 +71,4 @@ try {
     </div>
   </div>
 </BaseLayout>
+
