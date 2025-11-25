@@ -114,14 +114,14 @@ const sponsorTypes = (Object.keys(sponsorsByType) as SponsorType[]).filter(
 										href={sponsor.url}
 										target="_blank"
 										rel="noopener noreferrer"
-										class="transition-transform hover:scale-110 h-[90px] w-[200px]"
+										class="transition-transform hover:scale-110 h-[120px] w-[200px]"
 									>
 										{logoImage && logoUrl && (
 											<Image
 												src={logoUrl}
 												alt={logoImage.alternativeText || sponsor.name}
 												width={200}
-												height={90}
+												height={120}
 												class="h-full w-full object-contain"
 											/>
 										)}
