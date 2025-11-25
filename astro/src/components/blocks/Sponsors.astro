@@ -5,6 +5,7 @@ import { cn } from "@lib/cn";
 import { getImageUrl } from "@lib/imageUtils";
 import { configureMarkdown, parseMarkdown } from "@lib/markdown";
 import { Image } from "astro:assets";
+import Button from "@components/shared/Button.astro";
 
 type SponsorType = "institutionnel" | "platinium" | "gold" | "silver";
 
@@ -83,6 +84,13 @@ const sponsorTypes = (Object.keys(sponsorsByType) as SponsorType[]).filter(
 			{parsedDescription && (
 				<div class="mt-4 prose prose-strong:font-bold max-w-none" set:html={parsedDescription}></div>
 			)}
+
+			<Button 
+				text={"Devenir sponsor"}
+				target={"_blank"}
+				url={"https://strapi.normandie.ai/uploads/Dossier_de_Sponsoring_2025_Light_c14c656945.pdf"}
+				className="mt-10"
+			/>
 
 			<!-- Sponsors by type -->
 			<div class="space-y-16 mt-20">
