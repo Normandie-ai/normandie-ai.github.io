@@ -18,8 +18,7 @@ const strapiUrl = import.meta.env.STRAPI_URL;
 const { firstName, lastName, avatar, role, job } = Astro.props;
 const avatarUrl = getImageUrl(avatar?.url, strapiUrl);
 
-const isLongName = firstName.length + lastName.length > 15;
-const fullName = `${firstName} ${isLongName ? lastName.slice(0, 1) + "." : lastName}`;
+const fullName = `${firstName} ${lastName}`;
 ---
 
 <div class="p-4 py-6 bg-[#F3F2FE] flex flex-col items-center justify-center gap-3 rounded-xl border border-[#725CFA]">
