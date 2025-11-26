@@ -14,7 +14,7 @@
     "@encoreskytech/strapi-plugin-nested-populator": "^1.3.0",
     "@strapi/plugin-documentation": "^5.11.0",
     "@strapi/plugin-users-permissions": "5.12.5",
-    "@strapi/strapi": "5.12.5",
+    "@strapi/strapi": "5.24.2",
     "better-sqlite3": "11.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
