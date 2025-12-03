@@ -263,10 +263,9 @@ const allSoldOut = true;
 
   // Update products list
   function updateProducts(products) {
-    // Filter to show only products where is_hidden is not true AND title is "Ticket d'accès professionnel"
-    const visibleProducts = products.filter(p =>
-      p.is_hidden !== true && p.title === "Ticket d'accès professionnel"
-    );
+    // Filter to show only products where is_hidden is not true
+    // When a promo code is applied, show all non-hidden products returned by the API
+    const visibleProducts = products.filter(p => p.is_hidden !== true);
 
     currentProducts = visibleProducts;
     const container = document.getElementById('tickets-container');
