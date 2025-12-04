@@ -33,6 +33,11 @@ interface Room {
 	title: string;
 }
 
+interface Background {
+	url: string;
+	alternativeText?: string;
+}
+
 interface Conference {
 	id: number;
 	slug: string;
@@ -42,8 +47,10 @@ interface Conference {
 	endTime: string;
 	duration: string;
 	description?: string;
-	room: Room;
+	rooms: Room[];
 	categories: Category[];
+	background?: Background;
+	ratingLink?: string;
 }
 
 export async function getStaticPaths() {
@@ -53,10 +60,11 @@ export async function getStaticPaths() {
 				speakers: {
 					populate: ["image"],
 				},
-				room: true,
+				rooms: true,
 				categories: {
 					populate: ["icon"],
 				},
+				background: true,
 			},
 		},
 		{
@@ -85,15 +93,22 @@ const strapiUrl = import.meta.env.STRAPI_URL;
 // Configure marked for markdown parsing
 configureMarkdown();
 const parsedContent = conference.description ? parseMarkdown(conference.description) : "";
+
+// Background image - use conference background if available, otherwise fallback
+const defaultBackground = "/uploads/BG_pages_annexes_resultat_67e3d8aab5.webp";
+const backgroundUrl = conference.background
+	? getImageUrl(conference.background.url, strapiUrl)
+	: null;
+const backgroundImage = {
+	url: backgroundUrl || defaultBackground,
+	alternativeText: conference.background?.alternativeText || "Conference background",
+};
 ---
 
 <PageLayout shownNavbar={false}>
 	<Header
 		title={conference.title}
-		backgroundImage={{
-			url: "/uploads/BG_pages_annexes_resultat_67e3d8aab5.webp",
-			alternativeText: "Conference background",
-		}}
+		backgroundImage={backgroundImage}
 	/>
 
 	<section class="bg-white pt-12 xs:py-12 lg:py-24">
@@ -119,10 +134,15 @@ const parsedContent = conference.description ? parseMarkdown(conference.descript
 							</div>
 						);
 					})}
+					{conference.rooms && conference.rooms.length > 0 && (
+						<div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm border">
+							<span class="text-sm font-medium">{conference.rooms.map((room: Room) => room.title).join(" & ")}</span>
+						</div>
+					)}
 					<div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm border">
 						<span class="text-sm font-medium">{conference.startTime} - {conference.endTime}</span>
 					</div>
-					<div class="flex items-center gap-2 0 px-4 py-2 rounded-full text-sm border">
+					<div class="flex items-center gap-2 px-4 py-2 rounded-full text-sm border">
 						<span class="text-sm font-medium">{conference.duration}</span>
 					</div>
 				</div>
