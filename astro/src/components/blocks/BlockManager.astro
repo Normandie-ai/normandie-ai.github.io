@@ -12,6 +12,7 @@ import Header from "./Header.astro";
 import TextBlock from "./TextBlock.astro";
 import Program from "./Program.astro";
 import Sponsors from "./Sponsors.astro";
+import Live from "./Live.astro";
 
 interface Block {
 	__component: string;
@@ -40,7 +41,7 @@ const componentMap: Record<string, any> = {
 	"blocks.text-block": TextBlock,
 	"blocks.program": Program,
 	"blocks.sponsors": Sponsors,
-
+	"blocks.live": Live
 };
 ---
 
