@@ -3,7 +3,6 @@ import { Image } from "astro:assets";
 import fetchApi from "@lib/strapi";
 import { getImageUrl, getLinkUrl } from "@lib/imageUtils";
 import DayCounter from "@components/shared/DayCounter.astro";
-import Ticketting from "@components/shared/Ticketting.astro";
 
 interface NavbarItem {
 	title: string;
@@ -43,8 +42,6 @@ const navbarItems = navigationData?.navbarItems || [];
 
 const logoWhiteUrl = getImageUrl(logoWhite?.url, strapiUrl);
 const logoColorUrl = getImageUrl(logoColor?.url, strapiUrl);
-
-
 ---
 
 <header class="absolute md:fixed text-slate-100 body-font z-20 w-full">
@@ -95,7 +92,6 @@ const logoColorUrl = getImageUrl(logoColor?.url, strapiUrl);
       })} 
     </nav>
 
-    <Ticketting className="ml-7" />
-    <DayCounter targetDate="2025-12-11" className="ml-8" />
+    <DayCounter className="ml-8" />
    </div>
  </header>
