@@ -7,16 +7,16 @@ interface Props {
 const { className = "" } = Astro.props;
 ---
 
-<a href="#live" id="day-counter-container" class={cn("hidden lg:block ml-4 px-10 py-2 bg-white/10 backdrop-blur-md rounded-lg border-1 border-white shadow-lg relative overflow-hidden", className)}>
+<a href="https://www.twitch.tv/normandieai" target="_blank" id="day-counter-container" class={cn("hidden lg:block ml-4 px-10 py-2 bg-white/10 backdrop-blur-md rounded-lg border-1 border-white shadow-lg relative overflow-hidden", className)}>
   <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
     <span id="day-counter-bg" class="text-white/10 avega text-4xl font-bold select-none">
-      Live
+      Twitch
     </span>
   </div>
   
   <div class="flex items-center space-x-2 relative z-10">
     <span id="day-counter" class="text-white font-bold text-lg tracking-wider">
-      Live
+      Twitch
     </span>
   </div>
 </a>
