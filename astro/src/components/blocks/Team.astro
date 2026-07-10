@@ -46,7 +46,6 @@ const { anchor, zIndex, title, content, cardImage, cardTitle, cardContent, hasNo
 // Configure marked to properly handle markdown
 configureMarkdown();
 const parsedContent = parseMarkdown(content);
-const parsedCardContent = parseMarkdown(cardContent);
 
 const cardImageUrl = getImageUrl(cardImage?.url, strapiUrl);
 
@@ -63,7 +62,7 @@ const cardImageUrl = getImageUrl(cardImage?.url, strapiUrl);
         {members?.map((member) => {
           return <TeamMember firstName={member.firstName} lastName={member.lastName} avatar={member.avatar} role={member.role} job={member.job} />;
         })}
-        <JoinCard cardImage={cardImageUrl} cardTitle={cardTitle} cardContent={parsedCardContent} />
+        <JoinCard cardImage={cardImageUrl} cardTitle={cardTitle} />
       </div>
     </div>
 

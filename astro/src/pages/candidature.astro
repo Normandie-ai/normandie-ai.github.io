@@ -1,0 +1,248 @@
+---
+import TicketingHeader from "@components/blocks/TicketingHeader.astro";
+import AvegaTitle from "@components/shared/AvegaTitle.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const inputClass =
+	"w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#725CFA]";
+const labelClass = "block text-sm font-bold text-gray-700 mb-2";
+---
+
+<BaseLayout>
+	<div class="min-h-screen flex flex-col bg-white text-gray-600">
+		<TicketingHeader />
+
+		<main class="flex-1 w-full max-w-2xl mx-auto px-6 py-12 md:py-16">
+			<AvegaTitle title="Rejoignez l’<em>asso</em>" color="#725CFA" level={1} size={2} />
+
+			<p class="mt-6 leading-relaxed">
+				Vous souhaitez participer à l’aventure Normandie.ai et faire vivre la
+				journée normande des intelligences artificielles responsables ?
+				Envoyez-nous votre candidature via ce formulaire, l’équipe reviendra
+				vers vous rapidement.
+			</p>
+
+			<form
+				id="candidature-form"
+				novalidate
+				class="mt-10 p-8 rounded-xl border border-dashed border-[#725CFA] flex flex-col gap-6"
+			>
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+					<div>
+						<label for="firstName" class={labelClass}>Prénom *</label>
+						<input
+							id="firstName"
+							name="firstName"
+							type="text"
+							required
+							autocomplete="given-name"
+							class={inputClass}
+						/>
+						<p class="field-error hidden mt-2 text-sm text-red-500" data-error-for="firstName"></p>
+					</div>
+					<div>
+						<label for="lastName" class={labelClass}>Nom *</label>
+						<input
+							id="lastName"
+							name="lastName"
+							type="text"
+							required
+							autocomplete="family-name"
+							class={inputClass}
+						/>
+						<p class="field-error hidden mt-2 text-sm text-red-500" data-error-for="lastName"></p>
+					</div>
+				</div>
+
+				<div>
+					<label for="email" class={labelClass}>Adresse e-mail *</label>
+					<input
+						id="email"
+						name="email"
+						type="email"
+						required
+						autocomplete="email"
+						placeholder="vous@exemple.fr"
+						class={inputClass}
+					/>
+					<p class="field-error hidden mt-2 text-sm text-red-500" data-error-for="email"></p>
+				</div>
+
+				<div>
+					<label for="message" class={labelClass}>
+						Pourquoi souhaitez-vous rejoindre l’asso ? *
+					</label>
+					<textarea
+						id="message"
+						name="message"
+						required
+						rows="6"
+						placeholder="Parlez-nous de vous, de vos envies, de ce que vous aimeriez apporter à l'association..."
+						class={inputClass}></textarea>
+					<p class="field-error hidden mt-2 text-sm text-red-500" data-error-for="message"></p>
+				</div>
+
+				<div>
+					<label class="flex items-start gap-3 text-sm cursor-pointer">
+						<input
+							id="cguAccepted"
+							type="checkbox"
+							name="cguAccepted"
+							required
+							class="mt-0.5 size-4 accent-[#725CFA]"
+						/>
+						<span>
+							J’accepte{" "}
+							<a
+								href="/mentions-legales/"
+								target="_blank"
+								class="font-bold text-[#725CFA] underline underline-offset-2 hover:text-[#6336E4] transition-colors"
+							>
+								les conditions générales d’utilisation
+							</a>{" "}
+							*
+						</span>
+					</label>
+					<p class="field-error hidden mt-2 text-sm text-red-500" data-error-for="cguAccepted"></p>
+				</div>
+
+				<button
+					type="submit"
+					id="candidature-submit"
+					class="self-start px-8 py-2.5 rounded-md font-semibold bg-[#725CFA] text-white hover:bg-[#725CFA]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+				>
+					Envoyer ma candidature
+				</button>
+
+				<p id="candidature-error" class="hidden text-sm text-red-500 font-bold">
+					Une erreur est survenue lors de l’envoi. Merci de réessayer, ou
+					écrivez-nous directement à bonjour@normandie.ai.
+				</p>
+			</form>
+
+			<div
+				id="candidature-success"
+				class="hidden mt-10 p-8 rounded-xl border border-dashed border-[#725CFA] text-center"
+			>
+				<h2 class="text-xl font-bold text-[#725CFA]">
+					Merci pour votre candidature !
+				</h2>
+				<p class="mt-3">
+					Nous l’avons bien reçue. L’équipe Normandie.ai vous recontactera très
+					vite à l’adresse indiquée.
+				</p>
+				<a
+					href="/"
+					class="inline-flex mt-6 px-8 py-2.5 rounded-md font-semibold bg-[#725CFA] text-white hover:bg-[#725CFA]/90 transition-colors"
+				>
+					Retour au site
+				</a>
+			</div>
+		</main>
+
+		<footer class="w-full py-8 px-6 text-center text-sm text-gray-400">
+			© 2026 Normandie.ai – Tous droits réservés
+		</footer>
+	</div>
+
+</BaseLayout>
+
+<script>
+	const form = document.getElementById("candidature-form") as HTMLFormElement | null;
+	const success = document.getElementById("candidature-success");
+	const submitButton = document.getElementById("candidature-submit") as HTMLButtonElement | null;
+	const errorMessage = document.getElementById("candidature-error");
+
+	// --- Validation personnalisée (remplace les bulles du navigateur) ---
+
+	const EMAIL_REGEX = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+	const validators: Record<string, (input: HTMLInputElement | HTMLTextAreaElement) => string | null> = {
+		firstName: (input) => (input.value.trim() ? null : "Veuillez renseigner votre prénom."),
+		lastName: (input) => (input.value.trim() ? null : "Veuillez renseigner votre nom."),
+		email: (input) => {
+			if (!input.value.trim()) return "Veuillez renseigner votre adresse e-mail.";
+			return EMAIL_REGEX.test(input.value.trim()) ? null : "Cette adresse e-mail n’est pas valide.";
+		},
+		message: (input) =>
+			input.value.trim()
+				? null
+				: "Dites-nous en quelques mots pourquoi vous souhaitez rejoindre l’asso.",
+		cguAccepted: (input) =>
+			(input as HTMLInputElement).checked
+				? null
+				: "Vous devez accepter les conditions générales d’utilisation.",
+	};
+
+	function validateField(name: string): boolean {
+		const input = document.getElementById(name) as HTMLInputElement | HTMLTextAreaElement | null;
+		const errorEl = document.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+		if (!input || !errorEl) return true;
+
+		const message = validators[name]?.(input) ?? null;
+
+		errorEl.textContent = message ?? "";
+		errorEl.classList.toggle("hidden", !message);
+		if (input.type !== "checkbox") {
+			input.classList.toggle("border-red-500", Boolean(message));
+			input.classList.toggle("border-gray-300", !message);
+		}
+		return !message;
+	}
+
+	function validateForm(): boolean {
+		let firstInvalid: string | null = null;
+		for (const name of Object.keys(validators)) {
+			if (!validateField(name) && !firstInvalid) firstInvalid = name;
+		}
+		if (firstInvalid) document.getElementById(firstInvalid)?.focus();
+		return !firstInvalid;
+	}
+
+	// Efface l'erreur d'un champ dès que l'utilisateur le corrige
+	for (const name of Object.keys(validators)) {
+		const input = document.getElementById(name);
+		input?.addEventListener("input", () => {
+			const errorEl = document.querySelector(`[data-error-for="${name}"]`);
+			if (errorEl && !errorEl.classList.contains("hidden")) validateField(name);
+		});
+	}
+
+	// --- Envoi ---
+
+	form?.addEventListener("submit", async (event) => {
+		event.preventDefault();
+
+		if (!validateForm()) return;
+
+		const candidature = Object.fromEntries(new FormData(form).entries());
+
+		if (submitButton) {
+			submitButton.disabled = true;
+			submitButton.textContent = "Envoi en cours...";
+		}
+		errorMessage?.classList.add("hidden");
+
+		try {
+			// Surchargable en dev via PUBLIC_CANDIDATURE_API_URL (.env) ;
+			// par défaut : le Strapi de production.
+			const apiUrl = import.meta.env.PUBLIC_CANDIDATURE_API_URL || "https://strapi.normandie.ai/api";
+			const res = await fetch(`${apiUrl}/candidature`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(candidature),
+			});
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+			form.classList.add("hidden");
+			success?.classList.remove("hidden");
+		} catch (error) {
+			console.error("Envoi de la candidature échoué :", error);
+			errorMessage?.classList.remove("hidden");
+			if (submitButton) {
+				submitButton.disabled = false;
+				submitButton.textContent = "Envoyer ma candidature";
+			}
+		}
+	});
+</script>
