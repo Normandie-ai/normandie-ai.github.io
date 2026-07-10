@@ -30,6 +30,13 @@ export default async function fetchApi<T>({
 			url.searchParams.append(key, value);
 		}
 	}
+
+	// Ajustement local : le Strapi de prod ne répond pas au plugin
+	// nested-populator (customPopulate), on ajoute pLevel en secours.
+	if (url.searchParams.has("customPopulate") && !url.searchParams.has("pLevel")) {
+		url.searchParams.append("pLevel", "10");
+	}
+
 	const res = await fetch(url.toString());
 	let data = await res.json();
 
