@@ -1,16 +1,18 @@
+/* Inter : licence libre SIL OFL 1.1 (assets/fonts/LICENSE-Inter.txt).
+   Fichiers variables : toutes les graisses (100 à 900). */
 @font-face {
-  font-family: "Maax";
+  font-family: "Inter";
   font-style: normal;
-  font-weight: 400;
-  src: url("../assets/fonts/Maax.woff") format("woff");
+  font-weight: 100 900;
+  src: url("../assets/fonts/InterVariable.woff2") format("woff2");
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Maax";
-  font-style: normal;
-  font-weight: 700;
-  src: url("../assets/fonts/Maax-Bold.woff") format("woff");
+  font-family: "Inter";
+  font-style: italic;
+  font-weight: 100 900;
+  src: url("../assets/fonts/InterVariable-Italic.woff2") format("woff2");
   font-display: swap;
 }
 
@@ -23,7 +25,7 @@
 }
 
 body {
-  font-family: "Maax", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
   font-size: 16px;
   font-weight: 400;
@@ -34,8 +36,8 @@ body {
     Roboto, sans-serif;
 }
 
-.maax {
-  font-family: "Maax", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+.inter {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
 }
 
