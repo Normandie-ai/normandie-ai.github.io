@@ -16,7 +16,7 @@ normandie-ai-website/
 
 - **Framework**: Astro.js with TypeScript
 - **Styling**: TailwindCSS with custom design system
-- **Fonts**: Custom typography (Avega, Maax)
+- **Fonts**: Custom typography (Saira, Inter)
 - **Monitoring**: Sentry integration
 - **Deployment**: GitHub Pages ready
 
@@ -60,8 +60,8 @@ The website will be available at `http://localhost:4321`
 
 ### Typography
 
-- **Avega**: Display font for headings
-- **Maax**: Body text font
+- **Saira** (ExtraBold Italic): Display font for headings (SIL OFL 1.1)
+- **Inter**: Body text font (SIL OFL 1.1)
 
 ### Colors
 

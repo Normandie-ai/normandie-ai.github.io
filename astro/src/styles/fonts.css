@@ -1,41 +1,65 @@
+/* Inter : licence libre SIL OFL 1.1 (assets/fonts/LICENSE-Inter.txt).
+   Fichiers variables : toutes les graisses (100 à 900). */
 @font-face {
-  font-family: "Maax";
+  font-family: "Inter";
   font-style: normal;
-  font-weight: 400;
-  src: url("../assets/fonts/Maax.woff") format("woff");
+  font-weight: 100 900;
+  src: url("../assets/fonts/InterVariable.woff2") format("woff2");
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Maax";
-  font-style: normal;
-  font-weight: 700;
-  src: url("../assets/fonts/Maax-Bold.woff") format("woff");
+  font-family: "Inter";
+  font-style: italic;
+  font-weight: 100 900;
+  src: url("../assets/fonts/InterVariable-Italic.woff2") format("woff2");
+  font-display: swap;
+}
+
+/* Saira ExtraBold Italic : licence libre SIL OFL 1.1 (assets/fonts/LICENSE-Saira.txt).
+   Police des titres, à la place d'Avega. Deux sous-ensembles (latin, latin-ext). */
+@font-face {
+  font-family: "Saira";
+  font-style: italic;
+  font-weight: 800;
+  src: url("../assets/fonts/saira-latin-800-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Avega Italic";
-  font-style: normal;
-  font-weight: 400;
-  src: url("../assets/fonts/Avega-Italic.woff") format("woff");
+  font-family: "Saira";
+  font-style: italic;
+  font-weight: 800;
+  src: url("../assets/fonts/saira-latin-ext-800-italic.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
   font-display: swap;
 }
 
 body {
-  font-family: "Maax", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
 
+/* Police des titres. Le nom .avega (et le composant AvegaTitle) est historique :
+   la police est maintenant Saira. Avega n'écrivait qu'en capitales, d'où l'uppercase. */
 .avega {
-  font-family: "Avega Italic", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
+  font-family: "Saira", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.maax {
-  font-family: "Maax", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+.inter {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
 }
 
@@ -43,6 +67,6 @@ body {
   em {
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke: 1px;
-    font-style: normal;
+    font-style: inherit;
   }
 }
