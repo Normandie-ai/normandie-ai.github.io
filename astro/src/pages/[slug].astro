@@ -11,6 +11,9 @@ export async function getStaticPaths() {
 				blocks: {
 					populate: "*",
 				},
+				seo: {
+					populate: "*",
+				},
 			},
 		},
 		{
@@ -35,8 +38,8 @@ export async function getStaticPaths() {
 		: [];
 }
 
-const { blocks } = Astro.props;
+const { blocks, seo } = Astro.props;
 ---
-<PageLayout shownNavbar={false}>
+<PageLayout shownNavbar={false} seo={seo}>
   <BlockManager blocks={blocks} />
 </PageLayout>

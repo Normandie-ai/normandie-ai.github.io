@@ -2,12 +2,32 @@
 import "@styles/global.css";
 import "@styles/fonts.css";
 
-const { meta = {
+export interface Meta {
+  title?: string | null;
+  description?: string | null;
+  keywords?: string | null;
+  ogImage?: string | null;
+}
+
+interface Props {
+  meta?: Meta;
+}
+
+// Valeurs utilisées pour chaque champ SEO laissé vide dans Strapi
+const DEFAULT_META = {
   title: "Normandie.ai // La journée normande des intelligences artificielles responsables",
   description: "La journée Normandie.ai du 11 décembre 2025 aura lieu au Pathé Docks 76 de Rouen. Cette journée comportera de nombreuses activités et temps forts. Le fil conducteur de la journée sera les conférences où des experts discuteront de quatre sujets clés de l'IA.",
   keywords: "Normandie.ai, IA, conférences, Rouen, Pathé Docks 76",
   ogImage: "/og-image.png",
-} } = Astro.props;
+};
+
+const { meta: pageMeta = {} } = Astro.props as Props;
+const meta = {
+  title: pageMeta.title || DEFAULT_META.title,
+  description: pageMeta.description || DEFAULT_META.description,
+  keywords: pageMeta.keywords || DEFAULT_META.keywords,
+  ogImage: pageMeta.ogImage || DEFAULT_META.ogImage,
+};
 const language = 'en';
 
 // Get base URL to handle GitHub Pages subdirectories

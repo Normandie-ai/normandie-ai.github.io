@@ -27,6 +27,6 @@ const pages = await fetchApi({
 const homePage = Array.isArray(pages) && pages.length > 0 ? pages[0] : null;
 const blocks = homePage?.blocks || [];
 ---
-<PageLayout>
+<PageLayout seo={homePage?.seo}>
     <BlockManager blocks={blocks} />
 </PageLayout>

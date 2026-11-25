@@ -2,15 +2,33 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Header from '@components/Header.astro';
 import Footer from '@components/Footer.astro';
+import { getImageUrl } from '@lib/imageUtils';
+
+// Composant "SEO" d'une Page Strapi
+interface Seo {
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  keywords?: string | null;
+  ogImage?: { url: string } | null;
+}
 
 interface Props {
   shownNavbar?: boolean;
+  seo?: Seo | null;
 }
 
-const { shownNavbar = true } = Astro.props as Props;
+const { shownNavbar = true, seo } = Astro.props as Props;
+const strapiUrl = import.meta.env.STRAPI_URL;
+
+const meta = {
+  title: seo?.metaTitle,
+  description: seo?.metaDescription,
+  keywords: seo?.keywords,
+  ogImage: getImageUrl(seo?.ogImage?.url, strapiUrl),
+};
 ---
 
-<BaseLayout>
+<BaseLayout meta={meta}>
   <div class="page">
     <slot name="header">
       {shownNavbar && <Header />}
