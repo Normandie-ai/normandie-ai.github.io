@@ -20,18 +20,38 @@ interface Sponsor {
 	url: string;
 }
 
+interface LinkItem {
+	title?: string;
+	url?: string;
+	target?: "_blank" | "_self" | "_parent" | "_top";
+}
+
 interface Props {
 	anchor?: string;
 	zIndex: number;
 	title: string;
 	description: string;
 	sponsors: Sponsor[];
+	button?: LinkItem | null;
 	hasNotch: boolean;
 	previousBlockHasNotch: boolean;
 }
 
+// Valeurs utilisées tant que le champ "button" du bloc n'est pas rempli dans Strapi
+const DEFAULT_BUTTON = {
+	title: "Devenir sponsor",
+	url: "https://strapi.normandie.ai/uploads/Dossier_de_Sponsoring_2027_34fa6d7cab.pdf",
+	target: "_blank",
+} as const;
+
 const strapiUrl = import.meta.env.STRAPI_URL;
-const { anchor, zIndex, title, description, sponsors, hasNotch, previousBlockHasNotch } = Astro.props;
+const { anchor, zIndex, title, description, sponsors, button, hasNotch, previousBlockHasNotch } = Astro.props;
+
+const sponsorButton = {
+	title: button?.title || DEFAULT_BUTTON.title,
+	url: button?.url || DEFAULT_BUTTON.url,
+	target: button?.target || DEFAULT_BUTTON.target,
+};
 
 // Configure markdown
 configureMarkdown();
@@ -86,9 +106,9 @@ const sponsorTypes = (Object.keys(sponsorsByType) as SponsorType[]).filter(
 			)}
 
 			<Button 
-				text={"Devenir sponsor"}
-				target={"_blank"}
-				url={"https://strapi.normandie.ai/uploads/Dossier_de_Sponsoring_2027_34fa6d7cab.pdf"}
+				text={sponsorButton.title}
+				target={sponsorButton.target}
+				url={sponsorButton.url}
 				className="mt-10"
 			/>
 
